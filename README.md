@@ -1,7 +1,7 @@
 # FailureIsAllYouNeed
 
 **From observed failures to tested parameter repairs.**
-**Hosted self-improvement pipeline:** [two-arm design and names](docs/HOSTED_PIPELINE.md). The new pipeline starts both failure-conditioned AdamW training and direct parameter surgery from the exact original PPO checkpoint. HF Jobs executes the experiments, a trajectory dataset preserves evidence, W&B records separate curves, and publication requires audited improvement.
+**Hosted run completed:** [results and live model](docs/HOSTED_RESULTS_2026-11-04.md). AdamW training improved the original PPO policy from 8.8958 to 16.7500 mean return with zero regressions across the 96-start development census. The direct-surgery comparison accepted no edits. **Hosted self-improvement pipeline:** [two-arm design and names](docs/HOSTED_PIPELINE.md). The new pipeline starts both failure-conditioned AdamW training and direct parameter surgery from the exact original PPO checkpoint. HF Jobs executes the experiments, a trajectory dataset preserves evidence, W&B records separate curves, and publication requires audited improvement.
 
 
 A failure trace gives us a place to look: the observations, decisions, and state
