@@ -34,3 +34,10 @@ not create duplicate training runs or change any model weights. Future
 combined experiments should log candidate and incumbent metrics separately,
 record acceptance decisions and checkpoint hashes, and identify each metric's
 practice/gate/audit split.
+
+## Reconciled reports — 2026-11-03
+
+[Qwen modes and audit](https://wandb.ai/christian-cooper-us/weight-space-breakout/reports/Evidence-reconciliation---2026-11-03--VmlldzoxODI1MTI2Mw==) · [Kimi outcomes and batch sweep](https://wandb.ai/christian-cooper-us/kimi-brain-surgery/reports/Evidence-reconciliation---2026-11-03--VmlldzoxODI1MTI2NA==).
+
+Original metrics are preserved. Posthoc greedy metrics are explicitly namespaced.
+The batch sweep has 18 finished runs, all checked against its source JSON.

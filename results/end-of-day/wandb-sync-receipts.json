@@ -1,0 +1,78 @@
+{
+  "verified_batch_runs": [
+    {
+      "id": "2ppk7kj9",
+      "state": "finished"
+    },
+    {
+      "id": "yfkede9p",
+      "state": "finished"
+    },
+    {
+      "id": "liwbjejb",
+      "state": "finished"
+    },
+    {
+      "id": "agl9jj0s",
+      "state": "finished"
+    },
+    {
+      "id": "az26w9k4",
+      "state": "finished"
+    },
+    {
+      "id": "cjz3cskw",
+      "state": "finished"
+    },
+    {
+      "id": "p0bd784u",
+      "state": "finished"
+    },
+    {
+      "id": "8g2xiesi",
+      "state": "finished"
+    },
+    {
+      "id": "2sfp7cv1",
+      "state": "finished"
+    },
+    {
+      "id": "qbzy4igq",
+      "state": "finished"
+    },
+    {
+      "id": "nat3eine",
+      "state": "finished"
+    },
+    {
+      "id": "radrnke2",
+      "state": "finished"
+    },
+    {
+      "id": "dfyxvri7",
+      "state": "finished"
+    },
+    {
+      "id": "c4m3x0dv",
+      "state": "finished"
+    },
+    {
+      "id": "yw8f91rp",
+      "state": "finished"
+    },
+    {
+      "id": "9wbpcyvc",
+      "state": "finished"
+    },
+    {
+      "id": "58axol6g",
+      "state": "finished"
+    },
+    {
+      "id": "kg6alv5u",
+      "state": "finished"
+    }
+  ],
+  "weight-space-breakout": "The report was saved here: https://wandb.ai/christian-cooper-us/weight-space-breakout/reports/Evidence-reconciliation---2026-11-03--VmlldzoxODI1MTI2Mw==",
+  "kimi-brain-surgery": "The report was saved here: https://wandb.ai/christian-cooper-us/kimi-brain-surgery/reports/Evidence-reconciliation---2026-11-03--VmlldzoxODI1MTI2NA=="
+}

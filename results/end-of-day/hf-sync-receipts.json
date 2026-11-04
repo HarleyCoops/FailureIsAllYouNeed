@@ -1,0 +1,199 @@
+{
+  "HarleyCooper/failure-is-all-you-need-evaluations": {
+    "type": "dataset",
+    "revision": "9b3e592ee5b3cf41c492f4d27bd237bca995080f",
+    "files": [
+      "kimi_batch_configs.csv",
+      "kimi_v1.csv",
+      "kimi_v3.csv",
+      "kimi_v4_development.csv",
+      "kimi_v4_fresh.csv",
+      "LICENSE",
+      "provenance.json",
+      "qwen_greedy_posthoc.csv",
+      "qwen_sampled.csv",
+      "README.md"
+    ]
+  },
+  "HarleyCooper/grid-policy-mlp-repaired": {
+    "type": "model",
+    "before_revision": "bef3e7d3c0e1dd3193d9557829419f7033d9f9f3",
+    "revision": "94d2762790fd8dd48d0ed6512139e4a4dbe71908",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/grid-policy-mlp-repaired-v3": {
+    "type": "model",
+    "before_revision": "7a24ae17f408b4629edc3db9a84c3d3241541994",
+    "revision": "f8b7afaeab298334afe670f761aa95ef356ec91d",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/grid-policy-mlp": {
+    "type": "model",
+    "before_revision": "b704fb3a06599eeaa829346d0a245976683e7f93",
+    "revision": "28b137f6b049eaf3d9f8fa848edb87b83f46f94a",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-llm-repaired": {
+    "type": "model",
+    "before_revision": "b2d1d92d925cf8ef73a7520dc7ed88df11ecdf4a",
+    "revision": "fce78e256c78c78189c2db7687de5c1bd1bbd267",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-iterative": {
+    "type": "model",
+    "before_revision": "186627060d6cbff07d2ecb274f2346c7eb3be6c6",
+    "revision": "64a636cedb52ba6359b2b2a26aeacbef680d283d",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-failure-driven-01": {
+    "type": "model",
+    "before_revision": "24c97f8321b92612a993c9e49c0c88824d6392b1",
+    "revision": "dc1ddf6a695ca37956fb5656122d0768ccc3a977",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-fd-v1": {
+    "type": "model",
+    "before_revision": "4d2473d9d19940b4afbca09332865eec8f6edcb4",
+    "revision": "bc731d504817cce3406bca171f6a7f5bedd87fe0",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-failure-driven-02": {
+    "type": "model",
+    "before_revision": "66540444210207c9d88f53cef257bc38dfec2b7a",
+    "revision": "1ed60515b7708cb1775d133fccfe943bf6cb866a",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-failure-driven-03": {
+    "type": "model",
+    "before_revision": "be5a72ccb0281c3e9962459c43caf3f5d193dea2",
+    "revision": "b4707427f47a002bef3efcabe48443c5d7464932",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-basic-repair-01": {
+    "type": "model",
+    "before_revision": "6765f615e40eba0eccb75d0638cfa434ad5b4025",
+    "revision": "bf6533e464984f64046fd1f90380349aa71d14c7",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-qualified-repair-01": {
+    "type": "model",
+    "before_revision": "44bef3f4fe96d48b9d67f308d7734f4693846b91",
+    "revision": "14cbd7c24bc5369f97899db58e23a12a5e80055c",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/grid-policy-mlp-repaired-v4": {
+    "type": "model",
+    "before_revision": "70416552f93dc46ebcd18f6a79a9f21a6c566748",
+    "revision": "942f12afaee49e275b79314b867c9ab9a21f09de",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-inference": {
+    "type": "space",
+    "before_revision": "a2124d692fa107af5cad64dc0bcb50d4e7b5b2ab",
+    "revision": "e1d62416320ae24472480198dcde755657e870b5",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-repair-loop": {
+    "type": "space",
+    "before_revision": "fc1bff8d83644b8d77c3c2a468d95121580fe3c9",
+    "revision": "8015350d55075a40137a3f0f7c146e7d9866f49b",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-failure-driven-demo-01": {
+    "type": "space",
+    "before_revision": "786d7544b1f3410318bfdfee02b6d71bd4b590bc",
+    "revision": "0c2692e5c8d148605da0d309640b803cc844e4b0",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-fd-v1-loop": {
+    "type": "space",
+    "before_revision": "6d82fd2da7f4bfa05d649ec76b9f8aadfc70630f",
+    "revision": "78972bbcaaef919ff3383eeb453f14ae891959e3",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-failure-driven-demo-02": {
+    "type": "space",
+    "before_revision": "555d2671e0be69a3ae188d9b9d38ec5c56f09e7a",
+    "revision": "d4c72f380d98295889869f88a8d4e1442f92a293",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-failure-driven-demo-03": {
+    "type": "space",
+    "before_revision": "fbc4c01ab28ea11adebd0d8354ccd3fcc3c081b2",
+    "revision": "9a3202d99cd74684aa78d0faacf1bc4fb1807a45",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-basic-repair-demo-01": {
+    "type": "space",
+    "before_revision": "beb893d791c5aa1fd8a58f644ddf054d9f2de0c4",
+    "revision": "25de383ad743da441e0e4354e19a4586529e0911",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md"
+    ]
+  },
+  "HarleyCooper/weight-space-breakout-qualified-repair-demo-01": {
+    "type": "space",
+    "before_revision": "090286dd308ecb3efb3298a4c483bf34798b11b4",
+    "revision": "f412a9a0bfe2d5ba5c7b93c1a2b06e86dd5cbe74",
+    "payload_unchanged": true,
+    "updated_files": [
+      "README.md",
+      "app.py"
+    ]
+  }
+}

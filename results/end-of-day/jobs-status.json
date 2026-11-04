@@ -1,0 +1,36 @@
+{
+  "checked_at_utc": "2026-11-04T04:01:01.932Z",
+  "all_account_jobs": 83,
+  "stage_counts": {
+    "COMPLETED": 26,
+    "CANCELED": 28,
+    "ERROR": 29
+  },
+  "active_jobs": [],
+  "scheduled_jobs": 0,
+  "project_jobs": [
+    {
+      "id": "6aea9774c78863f9c6322027",
+      "created_at": "2026-11-04T02:24:52.856Z",
+      "finished_at": "2026-11-04T02:30:24.106Z",
+      "stage": "COMPLETED"
+    },
+    {
+      "id": "6aea1208c78863f9c631e911",
+      "created_at": "2026-11-03T16:55:36.986Z",
+      "finished_at": "2026-11-03T16:56:48.200Z",
+      "stage": "COMPLETED"
+    },
+    {
+      "id": "6aea11f1c78863f9c631e90d",
+      "created_at": "2026-11-03T16:55:13.055Z",
+      "finished_at": "2026-11-03T16:55:18.779Z",
+      "stage": "ERROR"
+    },
+    {
+      "id": "6aea10d60e0338d1bb7f5d48",
+      "created_at": "2026-11-03T16:50:30.800Z",
+      "stage": "CANCELED"
+    }
+  ]
+}

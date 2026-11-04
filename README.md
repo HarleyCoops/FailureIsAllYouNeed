@@ -27,6 +27,16 @@ objective: that miss was **not** prevented in this run.
 · [Typeset PDF](docs/kimi-parameter-repair.pdf)
 · [W&B connection and evidence](docs/WANDB.md)
 
+## Evaluation mode matters
+
+The accepted improvement below is for **sampled actions**. A posthoc greedy check
+on the same 1,024 audit seeds scored **10.2471 → 1.5674** (local NumPy 2.4.1,
+float32). The patch is therefore not an across-mode improvement. The recorded
+diagnostic miss remains unprevented. See [the reconciliation](docs/CROSS_REPO_RECONCILIATION.md).
+
+Latest: [batch solver findings](docs/BATCH_REPAIR_FINDINGS.md) · [end-of-day status](docs/STATUS_2026-11-03.md) ·
+[paired evaluation dataset](https://huggingface.co/datasets/HarleyCooper/failure-is-all-you-need-evaluations).
+
 ## The result
 
 A Qwen editor inspected and proposed changes to a deliberately damaged,

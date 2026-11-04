@@ -1,0 +1,71 @@
+{
+  "source_repository": "https://github.com/HarleyCoops/FailureIsAllYouNeed",
+  "source_branch": "codex/initial-results",
+  "kimi_source_commit": "13cfaec9f484a1a8864349a814bfd62905022a05",
+  "datasets": [
+    {
+      "config": "qwen_sampled",
+      "rows": 1568,
+      "source": "results/qualified-repair-01/paired_scores.csv",
+      "mode": "sample",
+      "role": "Frozen original practice/gate/audit; some audit seeds reused in subsequent independent development.",
+      "sha256": "db8db3da9495d0958ee44d09668daf136307c2026b23404dc7c54d829c822e66"
+    },
+    {
+      "config": "kimi_v1",
+      "rows": 1000,
+      "source": "results/kimi/eval/paired_heldout.json",
+      "mode": "greedy",
+      "role": "Original held-out set including earlier 64-game pilot.",
+      "sha256": "093f2c06bc6340933ded14e8078d890fa39392ca229b25851c11e397eaa81e49"
+    },
+    {
+      "config": "kimi_v3",
+      "rows": 1000,
+      "source": "results/kimi/eval/paired_heldout_v3.json",
+      "mode": "greedy",
+      "role": "Same old evaluation set as v1.",
+      "sha256": "af7189dcdb7d2d2e7ad0c0a0e865e82d45eaac5ada128a157d403e8e9d4e33fa"
+    },
+    {
+      "config": "kimi_v4_development",
+      "rows": 1000,
+      "source": "results/kimi/eval/paired_v4_contaminated17.json",
+      "mode": "greedy",
+      "role": "All 1000 old-set seeds; 17 failures informed v4 development.",
+      "sha256": "12f611f6a0be252cdf325bdd3c291f6a6bc194a9659bb8648d5afbe1f6a4c60d"
+    },
+    {
+      "config": "kimi_v4_fresh",
+      "rows": 1000,
+      "source": "results/kimi/eval/paired_v4_fresh.json",
+      "mode": "greedy",
+      "role": "Fresh set at time v4 was frozen; do not reuse as a new holdout after inspection.",
+      "sha256": "2441bf6d690718ee183952d8f0a83cae269dc6e7f696d296587f5ec56e20b187"
+    },
+    {
+      "config": "qwen_greedy_posthoc",
+      "rows": 1024,
+      "source": "results/action-mode-check/summary.json",
+      "mode": "greedy",
+      "role": "Posthoc same original audit seeds; NumPy 2.4.1 float32 Windows, not independent evaluation.",
+      "sha256": "0f311f016989e382ae1419a485aa59355670c6b6858d71c351f153da433f7bc6"
+    }
+  ],
+  "qwen_policy_fingerprints": {
+    "baseline": "61da8758dbed31e3b6b84661a98348db6e615ff6895aa9b1cf0c05e6fe990f2d",
+    "repaired": "88bf130ef06e04e7b1537aa063c2b9ce778a54e2dc62b0b9f2295d2273cbda58"
+  },
+  "kimi_checkpoint_file_sha256": {
+    "original": "d3cd5623fdae730fcda2574f2e678373a8c20b6717825621c66a28887bbe9dd5",
+    "v1": "9c338f7c08c9590ad104d958e1dd7e793dabbda18f42547d9be0e67eb095aa0c",
+    "v3": "e6d3e453a9c74efb0cd2c017713afe3c916dbdaeb16a7113d8d79c9f7a33af94",
+    "v4": "87c2248300f93f1bb395f0466602d3616edcf6125ea513a15803d5a84ef3ea40"
+  },
+  "batch_sweep": {
+    "source_commit": "2b417b1092eb8c61ba1d9989cf182d014c96ae81",
+    "source_file": "results_batch_sweep.json",
+    "configurations": 18,
+    "sha256": "12fb0f41ab31bc12e055cfa11e0d0ee8e4cb97c2c61cbe95d48b50bd6f50d298"
+  }
+}

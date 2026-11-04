@@ -1,0 +1,34 @@
+[
+  {
+    "id": "HarleyCooper/weight-space-breakout-inference",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-repair-loop",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-failure-driven-demo-01",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-fd-v1-loop",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-failure-driven-demo-02",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-failure-driven-demo-03",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-basic-repair-demo-01",
+    "stage": "RUNNING"
+  },
+  {
+    "id": "HarleyCooper/weight-space-breakout-qualified-repair-demo-01",
+    "stage": "RUNNING"
+  }
+]
