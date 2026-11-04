@@ -80,6 +80,8 @@ python -m hosted_pipeline.launch prepare --output <launch-record-directory>
 python -m hosted_pipeline.launch spaces --output <launch-record-directory> --source-commit <full-sha>
 # Wait for the training Space to report RUNNING.
 python -m hosted_pipeline.launch launch --output <launch-record-directory>
+# After a method publishes, verify every live inference trajectory:
+python -m hosted_pipeline.verify gradient --output <launch-record-directory>/deployment-gradient.json
 ```
 
 The launcher records submission intent before the API call and refuses a duplicate
@@ -88,6 +90,10 @@ An infrastructure failure preserves completed-cycle evidence. Automatic remote
 resumption is not yet implemented; the local loop's receipt-based resumption
 requires restored raw files and exactly matching source/runtime. Do not restart a
 failed hosted run under the same output names without reconciling its state.
+
+The live verifier checks all 96 final trajectories, the immutable model revision,
+the policy fingerprint, and equality between NumPy and safetensors weights. Its
+receipt is saved locally and uploaded to the trajectory dataset.
 
 HF Job execution and Docker Space hosting follow the
 [HF Jobs guide](https://huggingface.co/docs/huggingface_hub/en/guides/jobs) and
