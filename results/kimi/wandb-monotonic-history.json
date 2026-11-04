@@ -1,0 +1,102 @@
+{
+  "rows": [
+    {
+      "_step": 0,
+      "attempt": 1,
+      "mean_return": 8.1875,
+      "kept": 1,
+      "probe_flip_frac": 0.006681618540323334,
+      "repaired_regressions": 0
+    },
+    {
+      "_step": 1,
+      "attempt": 2,
+      "mean_return": 9.71875,
+      "kept": 1,
+      "probe_flip_frac": 0.13885528152629129,
+      "repaired_regressions": 0
+    },
+    {
+      "_step": 2,
+      "attempt": 3,
+      "mean_return": 9.578125,
+      "kept": 0,
+      "probe_flip_frac": 0.12702388406834242,
+      "repaired_regressions": 0
+    },
+    {
+      "_step": 3,
+      "attempt": 4,
+      "mean_return": 9.828125,
+      "kept": 1,
+      "probe_flip_frac": 0.012926022005546113,
+      "repaired_regressions": 0
+    }
+  ],
+  "run_id": "pa4792hk",
+  "run_name": "monotonic-lam100",
+  "total_steps": 3,
+  "sampled_points": 4,
+  "keys_returned": [
+    "attempt",
+    "kept",
+    "mean_return",
+    "probe_flip_frac",
+    "repaired_regressions"
+  ],
+  "requested_keys": [
+    "attempt",
+    "mean_return",
+    "kept",
+    "probe_flip_frac",
+    "repaired_regressions"
+  ],
+  "matching_rows": 4,
+  "matching_rows_exact": false,
+  "key_row_counts": {
+    "attempt": {
+      "observed": 4,
+      "returned": 4
+    },
+    "mean_return": {
+      "observed": 4,
+      "returned": 4
+    },
+    "kept": {
+      "observed": 4,
+      "returned": 4
+    },
+    "probe_flip_frac": {
+      "observed": 4,
+      "returned": 4
+    },
+    "repaired_regressions": {
+      "observed": 4,
+      "returned": 4
+    }
+  },
+  "unobserved_keys": [],
+  "keys_omitted_by_limits": [],
+  "key_counts_exact": false,
+  "retrieval_method": "batched_sampled_history",
+  "exact": false,
+  "sampled": true,
+  "requested_samples": 50,
+  "effective_samples": 50,
+  "rows_scanned": 20,
+  "stream": "default",
+  "x_axis": "_step",
+  "coverage": {
+    "first_x": 0.0,
+    "last_x": 3.0,
+    "requested_min_step": null,
+    "requested_max_step": null,
+    "target_x": null,
+    "tolerance": null
+  },
+  "source_truncated": false,
+  "source_values_truncated": 0,
+  "non_finite_counts": {},
+  "truncated": false,
+  "join": "outer"
+}

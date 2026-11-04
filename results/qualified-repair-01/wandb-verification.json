@@ -1,0 +1,21 @@
+{
+  "transport": "MCP over HTTPS",
+  "server_url": "https://mcp.withwandb.com/mcp",
+  "tool": "query_wandb_tool",
+  "run_url": "https://wandb.ai/christian-cooper-us/weight-space-breakout/runs/7a31ec5872dd3f77",
+  "run_id": "7a31ec5872dd3f77",
+  "state": "finished",
+  "summary": {
+    "audit/baseline_return": 1.2802734375,
+    "audit/candidate_return": 4.0478515625,
+    "audit/gain": 2.767578125,
+    "audit/losses": 243,
+    "audit/wins": 671,
+    "audit/ties": 110,
+    "candidate/changed_parameters": 3,
+    "selection/accepted": 1,
+    "deployment/verified": 1,
+    "selected_policy_hash": "88bf130ef06e04e7b1537aa063c2b9ce778a54e2dc62b0b9f2295d2273cbda58"
+  },
+  "matches_published_evidence": true
+}

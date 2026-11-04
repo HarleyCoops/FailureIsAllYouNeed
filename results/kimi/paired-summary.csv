@@ -1,0 +1,4 @@
+version,seed_start,seed_end,games,baseline_mean,repaired_mean,paired_gain,paired_se,wins,losses,ties,evaluation_role,source_file
+v1,20000,20999,1000,8.694,9.769,1.075,0.11833587105513854,137,0,863,"original 1,000-seed evaluation; includes earlier 64-seed pilot",eval/paired_heldout.json
+v3,20000,20999,1000,8.694,10.528,1.834,0.17425501085710224,137,17,846,reused old evaluation set,eval/paired_heldout_v3.json
+v4 fresh,30000,30999,1000,8.886,12.185,3.299,0.20695513868814527,253,20,727,fresh set after old-set failures informed development,eval/paired_v4_fresh.json

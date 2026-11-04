@@ -1,0 +1,47 @@
+[
+  {
+    "version": "v1",
+    "seed_start": 20000,
+    "seed_end": 20999,
+    "games": 1000,
+    "baseline_mean": 8.694,
+    "repaired_mean": 9.769,
+    "paired_gain": 1.075,
+    "paired_se": 0.11833587105513854,
+    "wins": 137,
+    "losses": 0,
+    "ties": 863,
+    "evaluation_role": "original 1,000-seed evaluation; includes earlier 64-seed pilot",
+    "source_file": "eval/paired_heldout.json"
+  },
+  {
+    "version": "v3",
+    "seed_start": 20000,
+    "seed_end": 20999,
+    "games": 1000,
+    "baseline_mean": 8.694,
+    "repaired_mean": 10.528,
+    "paired_gain": 1.834,
+    "paired_se": 0.17425501085710224,
+    "wins": 137,
+    "losses": 17,
+    "ties": 846,
+    "evaluation_role": "reused old evaluation set",
+    "source_file": "eval/paired_heldout_v3.json"
+  },
+  {
+    "version": "v4 fresh",
+    "seed_start": 30000,
+    "seed_end": 30999,
+    "games": 1000,
+    "baseline_mean": 8.886,
+    "repaired_mean": 12.185,
+    "paired_gain": 3.299,
+    "paired_se": 0.20695513868814527,
+    "wins": 253,
+    "losses": 20,
+    "ties": 727,
+    "evaluation_role": "fresh set after old-set failures informed development",
+    "source_file": "eval/paired_v4_fresh.json"
+  }
+]

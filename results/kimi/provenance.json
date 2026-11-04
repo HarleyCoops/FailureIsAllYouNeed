@@ -1,0 +1,523 @@
+{
+  "source_repository": "https://github.com/HarleyCoops/KimiBrainSurgery",
+  "source_commit": "13cfaec9f484a1a8864349a814bfd62905022a05",
+  "imported_at_utc": "2026-11-04T03:04:53.461220+00:00",
+  "scope": "Copied saved results; no new Kimi repair or rollout executed for this methods companion.",
+  "wandb_project_url": "https://forge.coreweave.com/wandb/christian-cooper-us/kimi-brain-surgery",
+  "mcp_server": "https://mcp.withwandb.com/mcp",
+  "mcp_tool": "query_wandb_tool",
+  "verified_sweep_summaries_against_source": true,
+  "wandb_runs": [
+    {
+      "id": "fg4fxovn",
+      "display_name": "paired-evals",
+      "group": "evaluation",
+      "state": "finished",
+      "summary": {
+        "v1_diff": 1.075,
+        "v1_wlt": "137/0/863",
+        "v4_fresh_diff": 3.299,
+        "v4_fresh_wlt": "253/20/727"
+      },
+      "config": {
+        "games": 1000,
+        "mode": "greedy, paired"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/fg4fxovn"
+    },
+    {
+      "id": "pa4792hk",
+      "display_name": "monotonic-lam100",
+      "group": "monotonic",
+      "state": "finished",
+      "summary": {},
+      "config": {
+        "lambda": 100,
+        "solver": "fullrank",
+        "gate": "keep iff return not worse"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/pa4792hk"
+    },
+    {
+      "id": "f8ey6bu8",
+      "display_name": "fullrank-lam10000",
+      "group": "fullrank-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 0,
+        "n_repairs": 8,
+        "final_return": 4.046875,
+        "min_return": 4.046875,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 10000,
+        "layer": "W2 full-rank",
+        "solver": "fullrank"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/f8ey6bu8"
+    },
+    {
+      "id": "95h0agkh",
+      "display_name": "fullrank-lam1000",
+      "group": "fullrank-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 2,
+        "n_repairs": 8,
+        "final_return": 8.4375,
+        "min_return": 8,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 1000,
+        "layer": "W2 full-rank",
+        "solver": "fullrank"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/95h0agkh"
+    },
+    {
+      "id": "hviu5fba",
+      "display_name": "fullrank-lam100",
+      "group": "fullrank-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 4,
+        "n_repairs": 8,
+        "final_return": 8.4375,
+        "min_return": 8.1875,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 100,
+        "layer": "W2 full-rank",
+        "solver": "fullrank"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/hviu5fba"
+    },
+    {
+      "id": "q4c91vq7",
+      "display_name": "fullrank-lam10",
+      "group": "fullrank-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 6,
+        "n_repairs": 8,
+        "final_return": 7.859375,
+        "min_return": 5.984375,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 10,
+        "layer": "W2 full-rank",
+        "solver": "fullrank"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/q4c91vq7"
+    },
+    {
+      "id": "517i4bah",
+      "display_name": "fullrank-lam1",
+      "group": "fullrank-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 4,
+        "n_repairs": 8,
+        "final_return": 4.796875,
+        "min_return": 3.171875,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 1,
+        "layer": "W2 full-rank",
+        "solver": "fullrank"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/517i4bah"
+    },
+    {
+      "id": "rp9g89l7",
+      "display_name": "fullrank-lam0",
+      "group": "fullrank-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 5,
+        "n_repairs": 8,
+        "final_return": 6.375,
+        "min_return": 2.125,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 0,
+        "layer": "W2 full-rank",
+        "solver": "fullrank"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/rp9g89l7"
+    },
+    {
+      "id": "hsf804y0",
+      "display_name": "w2-lam10000",
+      "group": "w2-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 4,
+        "n_repairs": 8,
+        "final_return": 6.5,
+        "min_return": 2.234375,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 10000,
+        "layer": "W2 rank-1",
+        "solver": "w2"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/hsf804y0"
+    },
+    {
+      "id": "wa6rkvgm",
+      "display_name": "w2-lam1000",
+      "group": "w2-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 4,
+        "n_repairs": 8,
+        "final_return": 6.5,
+        "min_return": 2.234375,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 1000,
+        "layer": "W2 rank-1",
+        "solver": "w2"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/wa6rkvgm"
+    },
+    {
+      "id": "f1axejtf",
+      "display_name": "w2-lam100",
+      "group": "w2-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 4,
+        "n_repairs": 8,
+        "final_return": 6.5,
+        "min_return": 2.234375,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 100,
+        "layer": "W2 rank-1",
+        "solver": "w2"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/f1axejtf"
+    },
+    {
+      "id": "fqfitcbg",
+      "display_name": "w2-lam10",
+      "group": "w2-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 5,
+        "n_repairs": 8,
+        "final_return": 3.21875,
+        "min_return": 2.40625,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 10,
+        "layer": "W2 rank-1",
+        "solver": "w2"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/fqfitcbg"
+    },
+    {
+      "id": "8xyzt9xx",
+      "display_name": "w2-lam1",
+      "group": "w2-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 4,
+        "n_repairs": 8,
+        "final_return": 3.375,
+        "min_return": 2.375,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 1,
+        "layer": "W2 rank-1",
+        "solver": "w2"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/8xyzt9xx"
+    },
+    {
+      "id": "7wa5fl8a",
+      "display_name": "w2-lam0",
+      "group": "w2-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 5,
+        "n_repairs": 8,
+        "final_return": 6.375,
+        "min_return": 2.125,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 0,
+        "layer": "W2 rank-1",
+        "solver": "w2"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/7wa5fl8a"
+    },
+    {
+      "id": "ifg06170",
+      "display_name": "nullspace-lam10000",
+      "group": "nullspace-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 8,
+        "n_repairs": 8,
+        "final_return": 5.46875,
+        "min_return": 4.765625,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 10000,
+        "layer": "W3",
+        "solver": "nullspace"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/ifg06170"
+    },
+    {
+      "id": "hftigal7",
+      "display_name": "nullspace-lam1000",
+      "group": "nullspace-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 8,
+        "n_repairs": 8,
+        "final_return": 5,
+        "min_return": 4.390625,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 1000,
+        "layer": "W3",
+        "solver": "nullspace"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/hftigal7"
+    },
+    {
+      "id": "v2r5x7u2",
+      "display_name": "nullspace-lam100",
+      "group": "nullspace-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 8,
+        "n_repairs": 8,
+        "final_return": 7.34375,
+        "min_return": 5.015625,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 100,
+        "layer": "W3",
+        "solver": "nullspace"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/v2r5x7u2"
+    },
+    {
+      "id": "yitjivlt",
+      "display_name": "nullspace-lam10",
+      "group": "nullspace-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 6,
+        "n_repairs": 8,
+        "final_return": 6.140625,
+        "min_return": 2.9375,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 10,
+        "layer": "W3",
+        "solver": "nullspace"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/yitjivlt"
+    },
+    {
+      "id": "sc8gzshg",
+      "display_name": "nullspace-lam1",
+      "group": "nullspace-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 6,
+        "n_repairs": 8,
+        "final_return": 2.671875,
+        "min_return": 2.078125,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 1,
+        "layer": "W3",
+        "solver": "nullspace"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/sc8gzshg"
+    },
+    {
+      "id": "f6zkngae",
+      "display_name": "nullspace-lam0",
+      "group": "nullspace-sweep",
+      "state": "finished",
+      "summary": {
+        "fixed_count": 7,
+        "n_repairs": 8,
+        "final_return": 2.375,
+        "min_return": 1.0625,
+        "baseline_gate": 8.16
+      },
+      "config": {
+        "lambda": 0,
+        "layer": "W3",
+        "solver": "nullspace"
+      },
+      "url": "https://wandb.ai/christian-cooper-us/kimi-brain-surgery/runs/f6zkngae"
+    }
+  ],
+  "result_files": [
+    {
+      "path": "results_nullspace_0.json",
+      "sha256": "0f11c6e347dda7665ff3d2a9feecd7cfd1cd2c7c7e46b3b87cdb3e06a295f61b",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_nullspace_0.json"
+    },
+    {
+      "path": "results_nullspace_1.json",
+      "sha256": "552b5b76395e841475fe09df278d95689039793a8d76d28e0582ff882394b144",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_nullspace_1.json"
+    },
+    {
+      "path": "results_nullspace_10.json",
+      "sha256": "5c9cce65025ec7694a5ac39be3e318a7b65af67e5a81a0c6d9afe66af41e51f6",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_nullspace_10.json"
+    },
+    {
+      "path": "results_nullspace_100.json",
+      "sha256": "fc605d73c7fdfc523bca6e942520dea16259464da09fa2fc966647f6e9db7f56",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_nullspace_100.json"
+    },
+    {
+      "path": "results_nullspace_1000.json",
+      "sha256": "7765e622485653fb707ccaba3996f12cdd12f21547bdbb6bb34f104910d24df7",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_nullspace_1000.json"
+    },
+    {
+      "path": "results_nullspace_10000.json",
+      "sha256": "b8ba98036c96b58df293c89e818c54ca8d6e62f0add1e5afd8025ff3737b5114",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_nullspace_10000.json"
+    },
+    {
+      "path": "results_w2_0.json",
+      "sha256": "5949baacaee3868275ce923356f160e7691828a0ca093d7abc2a362a2d00ee89",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_w2_0.json"
+    },
+    {
+      "path": "results_w2_1.json",
+      "sha256": "b376ffd774baabad016b13279f40956ac3aff0391a9b4104b1a112e088fd8b78",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_w2_1.json"
+    },
+    {
+      "path": "results_w2_10.json",
+      "sha256": "35a0b1b8ca004ba8307a73a74daed3f4198c458b0343fa1ab9e6737e9e2e3f19",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_w2_10.json"
+    },
+    {
+      "path": "results_w2_100.json",
+      "sha256": "1029c3f9a4a9dc4ada05b64a2f2fe48084de510b102511d57962dec52915d620",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_w2_100.json"
+    },
+    {
+      "path": "results_w2_1000.json",
+      "sha256": "335b2c8436cc609a3a61306707263063a7ff8c4e32eb95dc36bf7e3d16f3c83f",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_w2_1000.json"
+    },
+    {
+      "path": "results_w2_10000.json",
+      "sha256": "45f5174af6288fdfbe0d9df87563d6cb24570f3c68ea64bd09300a0e3449d3bf",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_w2_10000.json"
+    },
+    {
+      "path": "results_fullrank_0.json",
+      "sha256": "a68c2bc867876f7eec43d72c89244bbe5f604d274ca37648298abb0085a32a89",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_fullrank_0.json"
+    },
+    {
+      "path": "results_fullrank_1.json",
+      "sha256": "7aa51d346f7c508049d76f39616bf12504ac15324bc8808ed48b2fc10e1b46e9",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_fullrank_1.json"
+    },
+    {
+      "path": "results_fullrank_10.json",
+      "sha256": "1930462c490f44d14b0e22a7035fe188476b10bbf37737253e629a8fb53b65e7",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_fullrank_10.json"
+    },
+    {
+      "path": "results_fullrank_100.json",
+      "sha256": "9194eddac487aa48d3a0801a353f459ba2f78cafe9266a8cad966046b7cf9a83",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_fullrank_100.json"
+    },
+    {
+      "path": "results_fullrank_1000.json",
+      "sha256": "ff70387193c9b97720a1639854967a3cece3b9e73e314059e76643c829c391d5",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_fullrank_1000.json"
+    },
+    {
+      "path": "results_fullrank_10000.json",
+      "sha256": "8439af667e14a48123295c8af4d7a37deeb68396d9d8ae27461544940a555865",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_fullrank_10000.json"
+    },
+    {
+      "path": "results_monotonic_100.json",
+      "sha256": "1b882164497959a49ecb6932a469c301b136c4500eb5ee056c8711115530b044",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/results_monotonic_100.json"
+    },
+    {
+      "path": "eval/paired_heldout.json",
+      "sha256": "668616bf7e4b9383dbbdfa7d84648cf6c5c6cbc11567610d6540997aca6d166a",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/eval/paired_heldout.json"
+    },
+    {
+      "path": "eval/paired_heldout_v3.json",
+      "sha256": "509954bbe48d24defc958807509fa3d6c50a6fcfed853c4da3738f3704a92018",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/eval/paired_heldout_v3.json"
+    },
+    {
+      "path": "eval/paired_v4_fresh.json",
+      "sha256": "1be890af3964235e8d4fb5964361c8fd149acf7303667e65f62cbeebe4dff08e",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/eval/paired_v4_fresh.json"
+    },
+    {
+      "path": "eval/paired_v4_contaminated17.json",
+      "sha256": "68ed89ae1b6ff8da583a8774f8ea9274dc3571e553f22fd0f89b8bd98495ecfb",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/eval/paired_v4_contaminated17.json"
+    }
+  ],
+  "checkpoint_files_in_source_only": [
+    {
+      "path": "policy_weights.npz",
+      "sha256": "d3cd5623fdae730fcda2574f2e678373a8c20b6717825621c66a28887bbe9dd5",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/policy_weights.npz"
+    },
+    {
+      "path": "best_weights.npz",
+      "sha256": "9c338f7c08c9590ad104d958e1dd7e793dabbda18f42547d9be0e67eb095aa0c",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/best_weights.npz"
+    },
+    {
+      "path": "best_weights_v3.npz",
+      "sha256": "e6d3e453a9c74efb0cd2c017713afe3c916dbdaeb16a7113d8d79c9f7a33af94",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/best_weights_v3.npz"
+    },
+    {
+      "path": "best_weights_v4.npz",
+      "sha256": "87c2248300f93f1bb395f0466602d3616edcf6125ea513a15803d5a84ef3ea40",
+      "source_url": "https://github.com/HarleyCoops/KimiBrainSurgery/blob/13cfaec9f484a1a8864349a814bfd62905022a05/best_weights_v4.npz"
+    }
+  ]
+}

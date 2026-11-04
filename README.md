@@ -22,6 +22,11 @@ objective: that miss was **not** prevented in this run.
 · [Completed HF Job](https://huggingface.co/jobs/HarleyCooper/6aea9774c78863f9c6322027)
 · [W&B run](https://wandb.ai/christian-cooper-us/weight-space-breakout/runs/7a31ec5872dd3f77)
 
+**Parallel methods companion:** [Kimi's parameter-repair mathematics](docs/KIMI_METHODS.md)
+· [Full LaTeX source](docs/kimi-parameter-repair.tex)
+· [Typeset PDF](docs/kimi-parameter-repair.pdf)
+· [W&B connection and evidence](docs/WANDB.md)
+
 ## The result
 
 A Qwen editor inspected and proposed changes to a deliberately damaged,
@@ -54,6 +59,8 @@ to its previous value. These are direct consequences of the network equations;
 the separate causal contribution of each change to the return gain has not been
 established by an ablation study.
 
+![The exact three-parameter intervention](assets/weight-edit.png)
+
 The editor used **33 model turns**: four inspection calls and 29 proposal calls.
 Twenty-eight proposals were valid; one was rejected for an overlong diagnosis.
 The first proposal that met the practice rule ended editing automatically.
@@ -61,6 +68,14 @@ Its independent gate passed, and the accepted weights were published. The live
 Space reproduced the verifier's saved episode exactly. Two additional fresh
 inference checks scored 7 and 9; those examples are deployment checks, not another
 performance estimate.
+
+![All proposal calls, including unsuccessful and invalid edits](assets/proposal-search.png)
+
+The proposal chart shows mean paired practice gain with ±2 paired standard
+errors. These are exploratory proposals against the same baseline, not
+successive deployed improvements. Call 25 was invalid and has no score.
+The final point comes from the committed submission receipt and verifier;
+all other scored points come from tool feedback in the full trace.
 
 ## How the experiment worked
 
@@ -113,6 +128,52 @@ does not by itself prove that a behavior is uniquely located in those parameters
 
 See [the research idea](docs/IDEA.md) and [the exact protocol](docs/PROTOCOL.md).
 
+## Kimi's analytic repair work
+
+The parallel [KimiBrainSurgery project](https://github.com/HarleyCoops/KimiBrainSurgery)
+uses constrained numerical solvers to edit a PPO-trained game policy.
+We have added a [full mathematical companion](docs/KIMI_METHODS.md), with
+[LaTeX source](docs/kimi-parameter-repair.tex) and a
+[compiled PDF](docs/kimi-parameter-repair.pdf), grounded in its pinned code
+and [20 W&B runs](https://forge.coreweave.com/wandb/christian-cooper-us/kimi-brain-surgery).
+
+It derives the exact W3 readout edit, its soft null-space penalty, the rank-one
+and unrestricted W2 updates, the λ sweeps, and the keep/rollback rule.
+W2 uses analytic tanh derivatives and local corrections. These methods solve
+for a desired behavioral change under preservation constraints; they do not
+reverse the original training trajectory.
+
+![Kimi's 18 solver and lambda sweep runs](assets/kimi-sweeps.png)
+
+The sweeps applied every candidate, including damaging edits. The separate
+monotonic run retained only candidates whose mean on the reused gate did not
+decrease. Its actual retained-policy curve is shown below; rejected candidate
+scores remain visible.
+
+![Kimi's kept policy and rollback timeline](assets/kimi-monotonic.png)
+
+| Kimi checkpoint | Evaluation seeds | Baseline mean | Repaired mean | Paired gain | Wins / losses / ties |
+| --- | --- | ---: | ---: | ---: | --- |
+| v1 | 20000–20999 | 8.694 | 9.769 | +1.075 | 137 / 0 / 863 |
+| v3 | 20000–20999, reused | 8.694 | 10.528 | +1.834 | 137 / 17 / 846 |
+| v4 | 30000–30999, fresh | 8.886 | 12.185 | +3.299 | 253 / 20 / 727 |
+
+![Kimi's per-game improvements, regressions, and ties](assets/kimi-paired.png)
+
+These are saved Kimi results, recomputed from per-seed files; this documentation
+update did not rerun those repairs. v1's zero observed losses does not establish
+universal non-regression. Once earlier evaluation failures informed later
+repairs, that old set became development data. v4's fresh set still shows
+regressions alongside a higher mean.
+
+The [methods document](docs/KIMI_METHODS.md) keeps source hashes, original
+checkpoint hashes, and W&B run IDs together. It also describes a future
+interface for combining the projects: editor-selected targets, solver-produced
+edits, and independent counterfactual and preservation checks. That combined
+loop has not yet been demonstrated. Kimi's greedy PPO policy and our sampled,
+handwritten policy are different experiments; their absolute scores are not
+a common leaderboard.
+
 ## Reproduce the published result
 
 Python 3.11+ and a small CPU are sufficient. No API key, GPU, hosted job, or new
@@ -140,6 +201,20 @@ the same patch. The original hosted job script and full conversation are include
 as provenance; the original launch script uses account-specific paths and is not
 a portable one-click launcher.
 
+To regenerate the six data figures and check the documented solver algebra:
+
+```bash
+python -m pip install -r requirements-figures.txt
+python scripts/render_figures.py
+python scripts/render_kimi_figures.py
+python scripts/check_kimi_math.py
+```
+
+The figures use saved numerical records and checkpoint values. No new model
+calls or rollouts are made. The [methods page](docs/KIMI_METHODS.md) includes
+LaTeX build instructions. `CHECKSUMS.json` covers the published snapshot;
+regenerating a plot or PDF may change its file bytes.
+
 ## Evidence map
 
 | Artifact | What it records |
@@ -153,6 +228,10 @@ a portable one-click launcher.
 | [Checkpoints](checkpoints/) | Original and accepted NumPy-compatible safetensors |
 | [Deployment proof](results/qualified-repair-01/latest-deployment-check.json) | Pinned live checkpoint and exact replay match |
 | [Source provenance](vendor/SOURCE.json) | Original environment commit and file hashes |
+| [Proposal history](results/qualified-repair-01/proposal_history.csv) | Every proposal call and its practice result, with source labels |
+| [W&B verification](results/qualified-repair-01/wandb-verification.json) | Live MCP query matched the accepted Qwen run |
+| [Kimi provenance](results/kimi/provenance.json) | Separate source commit, 23 copied result files, checkpoint hashes, and 20 W&B run IDs |
+| [Kimi mathematics](docs/kimi-parameter-repair.tex) | Code-grounded derivations, assumptions, and proposed combination interface |
 
 ## What remains to demonstrate
 
