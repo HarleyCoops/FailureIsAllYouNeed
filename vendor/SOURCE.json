@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/HarleyCoops/weight-space-breakout-pipeline",
+  "commit": "0f4697c6c8cbfa48e96220c4e59881f5edfbd0b5",
+  "package_version": "0.4.5",
+  "files_sha256": {
+    "LICENSE": "3935d4fd9e7eb85bd423c9dca84b265dcd76f39b7b16cc62bbdd039e2d8d4106",
+    "weight_space_breakout/__init__.py": "0e5164d9b25808de14ad09c150530879ec0eb709646d346d86326ecae34c770c",
+    "weight_space_breakout/cli.py": "415da659d4d1e1eccc4c3b5f33cf745f6f23f7c459eba541bf7c4811a4713ed7",
+    "weight_space_breakout/demo.py": "e5df5b53a137fe3eacb89bf92110cf3b03f582c3bd3fb75aaed7a41988031b69",
+    "weight_space_breakout/editor_tools.py": "0190708e7d721f6e329cd6b8eff1ae50546473ed1bc62fb105b9b5f250347b05",
+    "weight_space_breakout/evaluation.py": "f1bebabd8d48f775be98aa51f1fa083270d32c93377481fddb2e62cedbb793da",
+    "weight_space_breakout/failures.py": "461bbd25a3a011cd439adc859321dc3e47508568eae3c8c70882b364107cad9f",
+    "weight_space_breakout/game.py": "a633dcad07d11089af6b3a83769948d72992d4cdf899ac77e194065a80e08f2e",
+    "weight_space_breakout/policy.py": "0cd27361019af5ab3595949f68a2800c54d9002de2c6e225fa701e4b631bc2e7",
+    "weight_space_breakout/practice_tools.py": "5f837c6b8cf71529270b397bc33d69cc6b9c249e8f2b67018d63ed8aa2b21a23",
+    "weight_space_breakout/qualified_tools.py": "2f53e999a5c1844b94c09fb2366bb81237d2456da0d12ea9adba9f1606c9f5c1",
+    "weight_space_breakout/repair_loop.py": "e549f98f54c0b93a357cb5ac242057b2708ce374e700eab26b5e4d6d140266a1",
+    "weight_space_breakout/taskset.py": "7d24ecf48b646c6ff7db44123cb52ea40c069903bb038341df5685e7bd1ca1dc",
+    "weight_space_breakout/viewer.html": "3a37a56c0fabd34b3fd6eb8ae68b69441904d5fc8bc4ed31190bf3b87b6ebb8d"
+  },
+  "modified": false
+}

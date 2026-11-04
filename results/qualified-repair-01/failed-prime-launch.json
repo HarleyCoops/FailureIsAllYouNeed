@@ -1,0 +1,20 @@
+{
+  "round": 0,
+  "evaluation_id": "pyqeo6j8e329chclnlihsgu5",
+  "trace_id": null,
+  "status": "FAILED",
+  "environment": "harleycooper/weight-space-breakout@0.4.5",
+  "outcome": "service_failure_without_trace",
+  "errors": [
+    {
+      "message": "Rate exceeded."
+    }
+  ],
+  "activity": {},
+  "valid_practice_results": null,
+  "final_submission_calls": null,
+  "independent_verifier_completed": null,
+  "trace_available": false,
+  "promoted": false,
+  "note": "No trace was available from Prime. Missing performance measurements are not zero scores. No weights promoted; preserve this attempt before any retry."
+}

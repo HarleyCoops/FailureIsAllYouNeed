@@ -1,0 +1,10 @@
+{
+  "evaluation_id": "hf-job-6aea9774c78863f9c6322027",
+  "compute_platform": "huggingface-jobs",
+  "baseline_hash": "61da8758dbed31e3b6b84661a98348db6e615ff6895aa9b1cf0c05e6fe990f2d",
+  "job_id": "6aea9774c78863f9c6322027",
+  "job_url": "https://huggingface.co/jobs/HarleyCooper/6aea9774c78863f9c6322027",
+  "evidence_revision": "01e6746520e70ef18792d49b50ffc3c9c3e8283f",
+  "source_commit": "0f4697c6c8cbfa48e96220c4e59881f5edfbd0b5",
+  "round_index": 0
+}

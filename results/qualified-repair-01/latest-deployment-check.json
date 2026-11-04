@@ -1,0 +1,28 @@
+{
+  "model_id": "HarleyCooper/weight-space-breakout-qualified-repair-01",
+  "revision": "44bef3f4fe96d48b9d67f308d7734f4693846b91",
+  "policy_hash": "88bf130ef06e04e7b1537aa063c2b9ce778a54e2dc62b0b9f2295d2273cbda58",
+  "policy_label": "Accepted repair from round 1",
+  "seed": 314159,
+  "step": 14,
+  "return": 1.0,
+  "bricks_remaining": 22,
+  "reason": "miss",
+  "actions": [
+    4,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    4,
+    4
+  ],
+  "verified": true
+}

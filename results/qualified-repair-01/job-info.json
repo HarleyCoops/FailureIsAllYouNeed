@@ -1,0 +1,10 @@
+{
+  "job_id": "6aea9774c78863f9c6322027",
+  "url": "https://huggingface.co/jobs/HarleyCooper/6aea9774c78863f9c6322027",
+  "compute_platform": "huggingface-jobs",
+  "evidence_repo": "HarleyCooper/weight-space-breakout-qualified-repair-01",
+  "evidence_branch": "hf-job-20261104-01",
+  "input_revision": "5125e6338386af036919605d423d5135d0ba6c4a",
+  "source_commit": "0f4697c6c8cbfa48e96220c4e59881f5edfbd0b5",
+  "job_script_sha256": "717a6da92e2a2d68a7b47d80ce01e58725b53455c0ac3c7236e39f88dad9327c"
+}

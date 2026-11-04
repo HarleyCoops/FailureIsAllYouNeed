@@ -1,0 +1,56 @@
+{
+  "baseline": {
+    "case_id": "428ad0bea19dd90a5df3484069eb27577f8c1d6a7f7345a81fd2700300a09046",
+    "seed": 314159,
+    "intervention_step": 6,
+    "failure_step": 14,
+    "prevented_recorded_miss": false,
+    "same_ball_contact": true,
+    "actions_after_intervention": [
+      3,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      3
+    ],
+    "ball": [
+      8,
+      8
+    ],
+    "paddle_center": 6,
+    "step": 14,
+    "return": 1.0,
+    "bricks_remaining": 22,
+    "reason": "miss"
+  },
+  "candidate": {
+    "case_id": "428ad0bea19dd90a5df3484069eb27577f8c1d6a7f7345a81fd2700300a09046",
+    "seed": 314159,
+    "intervention_step": 6,
+    "failure_step": 14,
+    "prevented_recorded_miss": false,
+    "same_ball_contact": true,
+    "actions_after_intervention": [
+      1,
+      3,
+      4,
+      3,
+      4,
+      4,
+      4,
+      4
+    ],
+    "ball": [
+      8,
+      8
+    ],
+    "paddle_center": 6,
+    "step": 14,
+    "return": 1.0,
+    "bricks_remaining": 22,
+    "reason": "miss"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "compute_platform": "huggingface-jobs",
+  "inference_provider": "Prime Inference",
+  "source_commit": "0f4697c6c8cbfa48e96220c4e59881f5edfbd0b5",
+  "input_revision": "5125e6338386af036919605d423d5135d0ba6c4a",
+  "python": "3.12.16",
+  "numpy": "2.4.1",
+  "verifiers": "0.4.1.dev97",
+  "environment_package": "0.4.5",
+  "started_at": 1793759142.2983387,
+  "completed_at": 1793759420.8035018,
+  "trace_id": "ff6c3e6caf2d4450a3b4b95c62c1d5a8",
+  "ok": true,
+  "stop_condition": "edit_submitted",
+  "num_turns": 33,
+  "accepted": true
+}

@@ -1,0 +1,57 @@
+{
+  "harness": {
+    "id": "null",
+    "env": {},
+    "forward_env": [],
+    "mcp_header_env": {},
+    "tool_timeout": 600.0,
+    "disabled_tools": null,
+    "dialect": "chat_completions",
+    "skills": [],
+    "compaction": null
+  },
+  "runtime": {
+    "type": "subprocess"
+  },
+  "scoring": {},
+  "deployment": {
+    "mode": "colocated",
+    "trust_compose": false
+  },
+  "model": "qwen/qwen3.6-35b-a3b",
+  "client": {
+    "base_url": "https://api.pinference.ai/api/v1",
+    "api_key_var": "EDITOR_API_KEY",
+    "headers": {},
+    "headers_from_env": {},
+    "timeout": {
+      "connect": 30.0,
+      "read": null,
+      "write": null,
+      "pool": null
+    },
+    "type": "eval"
+  },
+  "sampling": {
+    "temperature": 0.6,
+    "max_tokens": 16384,
+    "tool_choice": "required",
+    "parallel_tool_calls": false
+  },
+  "max_turns": null,
+  "max_input_tokens": null,
+  "max_output_tokens": null,
+  "max_total_tokens": null,
+  "max_turn_tokens": null,
+  "timeout": {
+    "setup": 120.0,
+    "rollout": 3600.0,
+    "finalize": 120.0,
+    "scoring": 600.0
+  },
+  "retries": {
+    "max_retries": 0,
+    "rules": []
+  },
+  "network_notice": true
+}

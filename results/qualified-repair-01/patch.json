@@ -1,0 +1,27 @@
+{
+  "edits": [
+    {
+      "tensor": "b3",
+      "index": [
+        0
+      ],
+      "value": 0.0
+    },
+    {
+      "tensor": "W3",
+      "index": [
+        0,
+        3
+      ],
+      "value": -8.0
+    },
+    {
+      "tensor": "W3",
+      "index": [
+        0,
+        4
+      ],
+      "value": 8.0
+    }
+  ]
+}

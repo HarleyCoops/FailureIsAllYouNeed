@@ -1,0 +1,62 @@
+{
+  "protocol": "qualified-repair-v1",
+  "published_date_local": "2026-11-03",
+  "timezone": "America/Winnipeg",
+  "baseline_hash": "61da8758dbed31e3b6b84661a98348db6e615ff6895aa9b1cf0c05e6fe990f2d",
+  "repaired_hash": "88bf130ef06e04e7b1537aa063c2b9ce778a54e2dc62b0b9f2295d2273cbda58",
+  "changed_parameters": 3,
+  "total_parameters": 17253,
+  "accepted": true,
+  "target_replay_required": false,
+  "prevented_recorded_miss": false,
+  "model_calls": 33,
+  "inspection_calls": 4,
+  "proposal_calls": 29,
+  "valid_proposals": 28,
+  "source_commit": "0f4697c6c8cbfa48e96220c4e59881f5edfbd0b5",
+  "hf_model_revision": "44bef3f4fe96d48b9d67f308d7734f4693846b91",
+  "job_url": "https://huggingface.co/jobs/HarleyCooper/6aea9774c78863f9c6322027",
+  "wandb_url": "https://wandb.ai/christian-cooper-us/weight-space-breakout/runs/7a31ec5872dd3f77",
+  "scope": "One tool-assisted repair of a planted fault; no inverse-gradient solver or sustained recursive improvement demonstrated.",
+  "splits": {
+    "practice": {
+      "episodes": 32,
+      "baseline_return": 1.875,
+      "candidate_return": 4.46875,
+      "gain": 2.59375,
+      "paired_standard_error": 0.7788268874175545,
+      "seed_start": 4040000,
+      "seed_end": 4040031,
+      "candidate_clear_rate": 0.0,
+      "wins": 23,
+      "losses": 8,
+      "ties": 1
+    },
+    "gate": {
+      "episodes": 512,
+      "baseline_return": 1.23046875,
+      "candidate_return": 3.78125,
+      "gain": 2.55078125,
+      "paired_standard_error": 0.19541238578427675,
+      "seed_start": 4060000,
+      "seed_end": 4060511,
+      "candidate_clear_rate": 0.0,
+      "wins": 324,
+      "losses": 127,
+      "ties": 61
+    },
+    "audit": {
+      "episodes": 1024,
+      "baseline_return": 1.2802734375,
+      "candidate_return": 4.0478515625,
+      "gain": 2.767578125,
+      "paired_standard_error": 0.13622149121786994,
+      "seed_start": 4090000,
+      "seed_end": 4091023,
+      "candidate_clear_rate": 0.0,
+      "wins": 671,
+      "losses": 243,
+      "ties": 110
+    }
+  }
+}

@@ -1,0 +1,2 @@
+# Preserve the exact bytes covered by CHECKSUMS.json across platforms.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
