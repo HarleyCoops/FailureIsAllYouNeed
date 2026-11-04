@@ -1,6 +1,8 @@
 # FailureIsAllYouNeed
 
 **From observed failures to tested parameter repairs.**
+**Hosted self-improvement pipeline:** [two-arm design and names](docs/HOSTED_PIPELINE.md). The new pipeline starts both failure-conditioned AdamW training and direct parameter surgery from the exact original PPO checkpoint. HF Jobs executes the experiments, a trajectory dataset preserves evidence, W&B records separate curves, and publication requires audited improvement.
+
 
 A failure trace gives us a place to look: the observations, decisions, and state
 changes that led to an unwanted outcome. Our research question is:
