@@ -25,7 +25,7 @@ class RegressionMemory:
             self.teacher_cache[key]={**serial(ep),'observations':ep['observations']}
         return self.teacher_cache[key]
 
-    def ingest(self, incumbent, candidate, before, after, source):
+    def ingest(self, incumbent, candidate, before, after, source, fixed_labels=False):
         if [r['seed'] for r in before]!=[r['seed'] for r in after]:raise ValueError('Unpaired regressions')
         event=dict(source=source,candidate_hash=candidate.fingerprint(),teacher_hash=incumbent.fingerprint(),cases=[])
         pairs=list(zip(before,after))
@@ -57,6 +57,8 @@ class RegressionMemory:
                 item=self.entries.setdefault(key,dict(observation=obs.copy(),action=action,count=0,seed=seed,step=step))
                 # Labels are refreshed against the current accepted policy at train time.
                 item['count']+=1
+                if fixed_labels:
+                    item['fixed_action']=action
             name=f"{len(self.events):03d}-seed-{seed}"
             self.writer(self.directory/(name+'.json.gz'),dict(source=source,teacher=serial(teacher),rejected=serial(bad),
                         first_divergence=divergence,training_steps=selected))
@@ -69,7 +71,7 @@ class RegressionMemory:
     def arrays(self, incumbent):
         items=sorted(self.entries.values(),key=lambda x:(-x['count'],x['seed'],x['step']))
         x=np.asarray([x['observation'] for x in items],dtype=np.float32).reshape(-1,600)
-        y=np.asarray([incumbent.act(obs) for obs in x],dtype=np.int64)
+        y=np.asarray([item.get('fixed_action',incumbent.act(obs)) for item,obs in zip(items,x)],dtype=np.int64)
         counts=np.asarray([x['count'] for x in items],dtype=np.float32)
         return x,y,counts
 
@@ -107,3 +109,50 @@ def import_previous(config, memory, base, baseline, output, writer):
         writer(Path(output)/'imported-corrections'/f'{len(aux):02d}.json.gz',dict(proposal=proposal,seed=failure['seed'],trajectory=serial(ep)))
     writer(Path(output)/'feedback-import.json',dict(parent=parent,states=len(memory.entries),receipts=receipts))
     return aux
+
+
+def import_audit_feedback(config, memory, incumbent, output, writer):
+    """Promote the former audit into training; freeze its known better labels."""
+    from huggingface_hub import hf_hub_download
+    parent=config['continuation']
+    def fetch(path):return Path(hf_hub_download(parent['dataset'],path,repo_type='dataset',revision=parent['revision']))
+    reference=Policy.load(fetch('initial.npz'))
+    old=Policy.load(fetch(parent['checkpoint']))
+    if old.fingerprint()!=incumbent.fingerprint():raise ValueError('Wrong continuation checkpoint')
+    with np.load(fetch('regression-training-memory.npz'),allow_pickle=False) as saved:
+        for obs,action,count in zip(saved['observations'],saved['actions'],saved['counts']):
+            key=hashlib.sha256(obs.tobytes()).hexdigest()
+            memory.entries[key]=dict(observation=obs.copy(),action=int(action),count=int(count),seed=-1,step=-1)
+    inherited=len(memory.entries)
+    before=json.loads(gzip.decompress(fetch('audit-base.json.gz').read_bytes()))
+    after=json.loads(gzip.decompress(fetch('audit-final.json.gz').read_bytes()))
+    expected=set(parent['regression_seeds'])
+    actual={b['seed'] for b,a in zip(before,after) if a['total']<b['total'] or b['reason']=='time_limit' and a['reason']=='collision'}
+    if actual!=expected:raise ValueError('Audit regression manifest mismatch')
+    old_cap=memory.max_cases;memory.max_cases=len(expected)
+    event=memory.ingest(reference,incumbent,before,after,'previous-audit-promoted-to-training',fixed_labels=True)
+    memory.max_cases=old_cap
+    if {x['seed'] for x in event['cases']}!=expected:raise ValueError('Not all audit failures were imported')
+    writer(Path(output)/'audit-feedback-import.json',dict(parent=parent,inherited_states=inherited,
+            imported_cases=len(event['cases']),total_states=len(memory.entries),event=event))
+    return reference,{x['seed']:x for x in before}
+
+
+def recovery_path(reference, incumbent, failure, horizon):
+    """A whole known-better suffix is a legal recovery path, including timeouts."""
+    teacher=play(reference,failure['seed'],horizon,trace=True)
+    if teacher['total']<=failure['total'] or failure['reason']=='time_limit' and teacher['reason']!='time_limit':return None
+    anchor=next((i for i,(a,b) in enumerate(zip(teacher['actions'],failure['actions'])) if a!=b),None)
+    if anchor is None:return None
+    # No world editing: replay actual prefix and the legal teacher suffix from reset.
+    prefix=failure['actions'][:anchor]+teacher['actions'][anchor:]
+    replay=play(incumbent,failure['seed'],horizon,prefix=prefix)
+    if replay['total']!=teacher['total'] or replay['final']!=teacher['final']:raise ValueError('Recovery suffix changed its world')
+    return dict(anchor=anchor,actions=teacher['actions'][anchor:],observations=teacher['observations'][anchor:],
+                total=teacher['total'],steps=teacher['steps'],known_better_suffix=True)
+
+
+def corrected_outcome(result, failure, recovery=False):
+    if not recovery:return result['total']>failure['total'] and result['steps']>failure['steps']
+    return (result['total']>failure['total'] and
+            (failure['reason']!='time_limit' or result['reason']=='time_limit'))

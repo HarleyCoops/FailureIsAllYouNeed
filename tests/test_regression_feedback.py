@@ -37,6 +37,32 @@ class RegressionFeedbackTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'outside feedback'):
                 memory.ingest(self.base,self.bad,[self.before],[self.after],'forbidden')
 
+    def test_promoted_audit_labels_do_not_copy_failed_incumbent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            memory=RegressionMemory([5],1000,directory,write)
+            memory.ingest(self.base,self.bad,[self.before],[self.after],'old-audit',fixed_labels=True)
+            x,y,_=memory.arrays(self.bad)
+            self.assertTrue(all(self.base.act(o)==a for o,a in zip(x,y)))
+            self.assertTrue(any(self.bad.act(o)!=a for o,a in zip(x,y)))
+
+    def test_recovery_accepts_better_score_at_same_timeout_horizon(self):
+        from crossgame.feedback import corrected_outcome
+        failure=dict(total=10.,steps=1000,reason='time_limit')
+        better=dict(total=12.,steps=1000,reason='time_limit')
+        collision=dict(total=12.,steps=900,reason='collision')
+        self.assertTrue(corrected_outcome(better,failure,recovery=True))
+        self.assertFalse(corrected_outcome(collision,failure,recovery=True))
+
+    def test_known_better_suffix_replays_from_improved_parent(self):
+        from crossgame.feedback import recovery_path
+        parent=Policy.load(BASE.with_name('continuation-base.npz'))
+        failure=play(parent,70008,1000)
+        target=recovery_path(self.base,parent,failure,1000)
+        self.assertIsNotNone(target)
+        replay=play(parent,70008,1000,prefix=failure['actions'][:target['anchor']]+target['actions'])
+        self.assertGreater(replay['total'],failure['total'])
+        self.assertEqual(replay['reason'],'time_limit')
+
     def test_conflicting_auxiliary_path_is_disclosed_not_silently_relabelled(self):
         obs=np.zeros((1,600),dtype=np.float32)
         primary=dict(observations=obs,actions=[1]);other=dict(observations=obs,actions=[2])

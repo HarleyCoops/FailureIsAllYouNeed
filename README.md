@@ -1,6 +1,8 @@
 # FailureIsAllYouNeed
 
-**Regression feedback experiment:** [Learning from rejected Asterix candidates](docs/ASTERIX_REGRESSION_FEEDBACK.md) replays prior regressions, combines their preservation targets with the original corrections, and uses a fresh final audit. Run 02 results are pending.
+**Continuation run 03:** [Learn from the failed audit](docs/ASTERIX_AUDIT_CONTINUATION.md). Starts from run 02’s improved weights, imports all 26 audit-regression cases, retains prior repairs, and reserves a new final audit.
+
+**Regression feedback experiment:** [Learning from rejected Asterix candidates](docs/ASTERIX_REGRESSION_FEEDBACK.md) replays prior regressions, combines their preservation targets with the original corrections, and uses a fresh final audit. Run 02 accepted four updates but failed publication on fresh-audit regressions.
 
 **New cross-game experiment:** [Asterix recursive learning](docs/ASTERIX_RECURSIVE.md) transfers the failure-diagnosis, gradient-training and replay pipeline to an official MinAtar game and a separately released starting policy. The protocol reserves a final audit after selection. [The first trial completed](docs/ASTERIX_RESULTS_2026-11-04.md): 48 candidates, 41 target repairs, zero accepted checkpoints because of regressions.
 

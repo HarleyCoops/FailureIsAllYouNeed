@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from crossgame.asterix import Policy, play, serial, evaluate, compare, diagnose, train
-from crossgame.feedback import RegressionMemory, compatible_targets, import_previous
+from crossgame.feedback import RegressionMemory, compatible_targets, import_previous, import_audit_feedback, recovery_path, corrected_outcome
 
 ROOT = Path(__file__).resolve().parent
 
@@ -32,11 +32,12 @@ def protected(before,after):
 def run(output, config, hosted=False):
     output=Path(output);output.mkdir(parents=True,exist_ok=False)
     write(output/'config.json',config)
-    base=Policy.load(ROOT/'assets/asterix-base.npz');current=base
+    base=Policy.load(ROOT/'assets'/config.get('initial_checkpoint','asterix-base.npz'));current=base
+    if config.get('initial_policy_hash') and base.fingerprint()!=config['initial_policy_hash']:raise ValueError('Initial policy fingerprint mismatch')
     base.save(output/'initial.npz')
-    groups={k:list(range(*config[k+'_seeds'])) for k in ['development','gate','audit']}
+    groups=config.get('seed_groups') or {k:list(range(*config[k+'_seeds'])) for k in ['development','gate','audit']}
     assert not (set(groups['development'])&set(groups['gate']) or set(groups['audit'])&(set(groups['development'])|set(groups['gate'])))
-    horizon=config['horizon']; bank=[]; history=[]; visited=set(); wb=api=None
+    horizon=config['horizon']; bank=list(config.get('inherited_repairs',[])); history=[]; visited=set(); wb=api=None
     status=dict(run_id=config['run_id'],status='running',source_commit=os.environ.get('SOURCE_COMMIT'),
                 scope=config['scope'],curve=[],releases={},config=config)
     if hosted:
@@ -57,18 +58,27 @@ def run(output, config, hosted=False):
 
     original={k:evaluate(base,groups[k],horizon) for k in ['development','gate']}
     before=original
-    memory=None;auxiliary=[]
+    memory=None;auxiliary=[];reference=None;reference_rows={}
+    for repair in bank:
+        r=play(base,repair['seed'],horizon)
+        if r['total']<repair['accepted_return'] or r['steps']<=repair['failure_steps']:raise ValueError('Inherited repair lost')
     if config.get('feedback'):
         memory=RegressionMemory(groups['development']+groups['gate'],horizon,output/'regression-memory',write,
                                 max_states=config['feedback']['max_states'])
-        auxiliary=import_previous(config,memory,base,original['development']+original['gate'],output,write)
+        if config.get('continuation'):
+            reference,reference_rows=import_audit_feedback(config,memory,base,output,write)
+        else:
+            auxiliary=import_previous(config,memory,base,original['development']+original['gate'],output,write)
         status['feedback_states']=len(memory.entries)
     for name,rows in original.items():write(output/f'baseline-{name}.json.gz',rows)
     status['curve'].append(dict(cycle=0,development_mean=compare(before['development'],before['development'])['before_mean'],
                                 gate_mean=compare(before['gate'],before['gate'])['before_mean'],accepted=False))
     snapshot()
     for cycle in range(config['cycles']):
-        failed=[r for r in before['development'] if r['reason']=='collision' and (current.fingerprint(),r['seed']) not in visited]
+        recovery=[r for r in before['development'] if r['seed'] in reference_rows and
+                  (r['total']<reference_rows[r['seed']]['total'] or reference_rows[r['seed']]['reason']=='time_limit' and r['reason']=='collision')
+                  and (current.fingerprint(),r['seed']) not in visited]
+        failed=recovery or [r for r in before['development'] if r['reason']=='collision' and (current.fingerprint(),r['seed']) not in visited]
         if not failed:break
         failed.sort(key=lambda r:(r['total'],r['steps'],r['seed']))
         failure=failed[0];visited.add((current.fingerprint(),failure['seed']))
@@ -77,7 +87,11 @@ def run(output, config, hosted=False):
         assert {k:v for k,v in serial(episode).items() if k!='worlds'}==failure
         directory=output/f'cycle-{cycle:02d}';directory.mkdir()
         write(directory/'failure.json.gz',serial(episode))
-        targets,diagnosis=diagnose(current,episode,**config['search'])
+        known=recovery_path(reference,current,failure,horizon) if reference and recovery else None
+        if known:
+            targets=[known];diagnosis=dict(method='verified-better-reference-suffix',anchor=known['anchor'],steps=len(known['actions']))
+        else:
+            targets,diagnosis=diagnose(current,episode,**config['search'])
         write(directory/'diagnosis.json.gz',diagnosis)
         probes=[]
         for seed in groups['development']:
@@ -98,7 +112,7 @@ def run(output, config, hosted=False):
             candidate=Policy.load(candidate_path)
             actual=play(candidate,failure['seed'],horizon)
             conditional=play(candidate,failure['seed'],horizon,prefix=failure['actions'][:target['anchor']])
-            corrected=all(r['total']>failure['total'] and r['steps']>failure['steps'] for r in [actual,conditional])
+            corrected=all(corrected_outcome(r,failure,bool(known)) for r in [actual,conditional])
             report=dict(index=index,lr=lr,penalty=penalty,loss_history=losses,corrected=corrected,
                         candidate_hash=candidate.fingerprint(),accepted=False,reason='target_not_corrected')
             after={name:evaluate(candidate,groups[name],horizon) for name in ['development','gate']}
@@ -125,7 +139,7 @@ def run(output, config, hosted=False):
                         'candidate/regression_margin_loss':losses[-1]['regression_margin_loss'],
                         'candidate/feedback_states':feedback_states})
             if accepted:
-                bank.append(dict(seed=failure['seed'],failure_steps=failure['steps'],accepted_return=actual['total']))
+                bank.append(dict(seed=failure['seed'],failure_steps=min(failure['steps'],actual['steps']-1),accepted_return=actual['total']))
                 auxiliary.append(target)
                 current=candidate;before=after;break
         current.save(output/'accepted.npz')
@@ -168,7 +182,18 @@ def run(output, config, hosted=False):
                  final_replay_passed=True,retained_repairs=bank,scope=config['scope'],
                  regression_feedback_states=len(memory.entries) if memory else 0,
                  regression_feedback_events=len(memory.events) if memory else 0)
-    publish=summary['accepted_checkpoints']>0 and audit_pass and audit_comparison['gain']>0
+    historical_pass=True
+    if reference:
+        reference_training={name:evaluate(reference,groups[name],horizon) for name in ['development','gate']}
+        historical={name:compare(reference_training[name],final[name]) for name in final}
+        historical_pass=all(protected(reference_training[name],final[name])[0] for name in final)
+        reference_audit=evaluate(reference,groups['audit'],horizon)
+        audit_reference_pass,audit_reference=protected(reference_audit,audit_final)
+        write(output/'audit-original-reference.json.gz',reference_audit)
+        summary.update(historical_original_reference=historical,fresh_audit_original_reference=audit_reference,
+                       inherited_repairs=len(config.get('inherited_repairs',[])))
+        audit_pass=audit_pass and audit_reference_pass
+    publish=summary['accepted_checkpoints']>0 and audit_pass and audit_comparison['gain']>0 and historical_pass
     summary['publishable']=publish;write(output/'summary.json',summary)
     current.save(output/'final.npz')
     if api and publish:
