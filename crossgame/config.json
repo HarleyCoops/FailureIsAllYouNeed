@@ -1,0 +1,21 @@
+{
+  "run_id": "asterix-recursive-20261104-01",
+  "dataset": "HarleyCooper/asterix-recursive-trajectories-01",
+  "model": "HarleyCooper/asterix-self-improved-01",
+  "space": "HarleyCooper/asterix-recursive-learning-01",
+  "wandb_entity": "christian-cooper-us",
+  "wandb_project": "failure-is-all-you-need-crossgame",
+  "horizon": 1000,
+  "development_seeds": [0, 32],
+  "gate_seeds": [1000, 1032],
+  "audit_seeds": [50000, 50128],
+  "cycles": 6,
+  "optimizer_steps": 300,
+  "learning_rates": [0.0001, 0.0005],
+  "preservation_penalties": [0.1, 1.0, 10.0],
+  "search": {"max_anchors": 24, "depth": 4, "width": 6, "rollout_budget": 96},
+  "training_seed": 9042026,
+  "selection": "Positive development mean gain, zero per-seed return losses on development and gate, no lost horizon survivors, retained repair checks",
+  "publication": "At least one accepted checkpoint; exact final replay; positive held-out mean gain with zero held-out return losses and no lost survivors",
+  "scope": "New game and checkpoint; transfer of method, not transfer of Breakout weights. Native MinAtar sticky actions 0.1 retained; policy greedy; 1000-step pilot differs from upstream sampled 10000-step evaluation."
+}

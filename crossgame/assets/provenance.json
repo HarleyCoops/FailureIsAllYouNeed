@@ -1,0 +1,25 @@
+{
+  "upstream_repo": "RikiyaT/lm_understand-logs",
+  "upstream_commit": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+  "base_kind": "Astra-authored one-shot network; not PPO",
+  "files": {
+    "asterix-base.npz": {
+      "path": "exp5_write_from_scratch/networks/asterix/hand.npz",
+      "sha256": "4c537e227824318c650d98e1e52de5a106071699213b7551e0810af71e9cdf1e"
+    },
+    "upstream-prompt.txt": {
+      "path": "exp5_write_from_scratch/runs/asterix/message.txt",
+      "sha256": "9e8243d5545956e42b8bd130bceba6ed90ecb807768be3ae0f498f765197f5da"
+    },
+    "LICENSE-upstream.txt": {
+      "path": "LICENSE",
+      "sha256": "395f7febedfda6b5498ca36cfe3344d3986659ce4385dd8b03d2d75604250a8e"
+    },
+    "LICENSE-MinAtar.txt": {
+      "path": "exp5_write_from_scratch/LICENSE-MinAtar",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    }
+  },
+  "official_game_source_matches_released_prompt": true,
+  "minatar": "1.0.15"
+}
