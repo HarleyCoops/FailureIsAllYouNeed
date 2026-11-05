@@ -122,7 +122,7 @@ def import_audit_feedback(config, memory, incumbent, output, writer):
     with np.load(fetch('regression-training-memory.npz'),allow_pickle=False) as saved:
         for obs,action,count in zip(saved['observations'],saved['actions'],saved['counts']):
             key=hashlib.sha256(obs.tobytes()).hexdigest()
-            memory.entries[key]=dict(observation=obs.copy(),action=int(action),count=int(count),seed=-1,step=-1)
+            memory.entries[key]=dict(observation=obs.copy(),action=int(action),count=int(count),seed=-1,step=-1,**({'fixed_action':int(action)} if config.get('objective')=='mean_return' else {}))
     inherited=len(memory.entries)
     before=json.loads(gzip.decompress(fetch('audit-base.json.gz').read_bytes()))
     after=json.loads(gzip.decompress(fetch('audit-final.json.gz').read_bytes()))

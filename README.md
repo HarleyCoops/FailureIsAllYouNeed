@@ -1,5 +1,7 @@
 # FailureIsAllYouNeed
 
+**Average-return loop:** [Run 03 release and run 04 protocol](docs/ASTERIX_AVERAGE_RETURN.md). The user has removed per-game preservation vetoes. We now optimize measured average return while retaining individual regressions as learning evidence. Run 03 is released under this revised criterion, with its original failed strict gate disclosed.
+
 **Continuation run 03:** [Learn from the failed audit](docs/ASTERIX_AUDIT_CONTINUATION.md). Starts from run 02’s improved weights, imports all 26 audit-regression cases, retains prior repairs, and reserves a new final audit.
 
 **Regression feedback experiment:** [Learning from rejected Asterix candidates](docs/ASTERIX_REGRESSION_FEEDBACK.md) replays prior regressions, combines their preservation targets with the original corrections, and uses a fresh final audit. Run 02 accepted four updates but failed publication on fresh-audit regressions.

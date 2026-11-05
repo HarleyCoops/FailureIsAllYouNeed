@@ -34,7 +34,7 @@ def episode(seed:int=5,variant:str='base'):
         policy=Policy.load(Path(__file__).with_name('assets')/CONFIG.get('initial_checkpoint','asterix-base.npz'));revision=CONFIG.get('continuation',{}).get('revision','upstream-pinned')
     else:
         release=status().get('releases',{}).get('improved')
-        if not release:raise HTTPException(409,'No candidate has passed the publication audit yet')
+        if not release:raise HTTPException(409,'No published candidate is available yet')
         policy=model(release['repo'],release['revision']);revision=release['revision']
         if policy.fingerprint()!=release['policy_hash']:raise HTTPException(503,'Checkpoint identity mismatch')
     ep=play(policy,seed,CONFIG['horizon'],trace=True)
@@ -47,11 +47,11 @@ def episode(seed:int=5,variant:str='base'):
 PAGE='''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Asterix recursive learning</title>
 <style>body{font:16px system-ui;background:#111925;color:#e5edf6;max-width:1100px;margin:auto;padding:32px}p{line-height:1.6;color:#abbcd0}a{color:#88d7ba}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}section{background:#1b293b;border-radius:16px;padding:20px;margin:20px 0}canvas{width:100%;max-width:400px;background:#0a111b}button,input{padding:12px;border-radius:8px;border:0}button{background:#88d7ba;cursor:pointer}svg{width:100%;height:190px}pre{white-space:pre-wrap}small{word-break:break-all}@media(max-width:650px){.grid{grid-template-columns:1fr}}</style></head><body>
 <p>FAILURE IS ALL YOU NEED · CROSS-GAME EXPERIMENT</p><h1>Can the loop learn a different game?</h1>
-<p>Asterix: collect gold, avoid enemies. Original MinAtar rules and native sticky actions remain intact. We continue from run 02’s improved checkpoint, retaining earlier repairs while learning from its 26 audit regressions.</p>
+<p>Asterix: collect gold, avoid enemies. Original MinAtar rules and native sticky actions remain intact. We continue from the published run 03 checkpoint and optimize average return. Individual regressions remain visible and feed the learning memory.</p>
 <section><h2 id="status">Connecting…</h2><div id="curve"></div><p id="numbers"></p><p id="links"></p><pre id="summary"></pre></section>
-<section><h2>Watch the policies</h2><p>Green is the player, gold is treasure, red is danger. Each game uses the same starting seed. Improved inference appears only after the final audit passes.</p>
+<section><h2>Watch the policies</h2><p>Green is the player, gold is treasure, red is danger. Each game uses the same starting seed. Published inference uses the declared average-return criterion; some games may score worse or end earlier.</p>
 <input id="seed" value="5" type="number" min="0"><button onclick="playGames()">Run paired games</button><p id="message"></p>
-<div class="grid"><div><h3>Starting checkpoint (run 02)</h3><canvas id="base" width="400" height="400"></canvas><p id="baseScore"></p></div><div><h3>Accepted improved weights</h3><canvas id="improved" width="400" height="400"></canvas><p id="improvedScore"></p></div></div></section>
+<div class="grid"><div><h3>Starting checkpoint (run 03)</h3><canvas id="base" width="400" height="400"></canvas><p id="baseScore"></p></div><div><h3>Published candidate weights</h3><canvas id="improved" width="400" height="400"></canvas><p id="improvedScore"></p></div></div></section>
 <p>Development and selection gate seeds are reused. The final audit is separate and runs after selection ends. This is a 1,000-step greedy-policy pilot, not a reproduction of the upstream 10,000-step sampled-action score. Base weights: Rikiya Takehi and collaborators, CC BY 4.0. Game: Kenny Young and Tian Tian, MinAtar 1.0.15, GPL-3.0.</p>
 <script>
 const $=x=>document.getElementById(x);let generation=0;

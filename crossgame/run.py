@@ -9,6 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
+from crossgame.selection import accepts, publishable
 from crossgame.asterix import Policy, play, serial, evaluate, compare, diagnose, train
 from crossgame.feedback import RegressionMemory, compatible_targets, import_previous, import_audit_feedback, recovery_path, corrected_outcome
 
@@ -37,6 +38,7 @@ def run(output, config, hosted=False):
     base.save(output/'initial.npz')
     groups=config.get('seed_groups') or {k:list(range(*config[k+'_seeds'])) for k in ['development','gate','audit']}
     assert not (set(groups['development'])&set(groups['gate']) or set(groups['audit'])&(set(groups['development'])|set(groups['gate'])))
+    objective=config.get('objective','strict')
     horizon=config['horizon']; bank=list(config.get('inherited_repairs',[])); history=[]; visited=set(); wb=api=None
     status=dict(run_id=config['run_id'],status='running',source_commit=os.environ.get('SOURCE_COMMIT'),
                 scope=config['scope'],curve=[],releases={},config=config)
@@ -61,7 +63,7 @@ def run(output, config, hosted=False):
     memory=None;auxiliary=[];reference=None;reference_rows={}
     for repair in bank:
         r=play(base,repair['seed'],horizon)
-        if r['total']<repair['accepted_return'] or r['steps']<=repair['failure_steps']:raise ValueError('Inherited repair lost')
+        if objective=='strict' and (r['total']<repair['accepted_return'] or r['steps']<=repair['failure_steps']):raise ValueError('Inherited repair lost')
     if config.get('feedback'):
         memory=RegressionMemory(groups['development']+groups['gate'],horizon,output/'regression-memory',write,
                                 max_states=config['feedback']['max_states'])
@@ -119,15 +121,14 @@ def run(output, config, hosted=False):
             report.update(refinement=refinement,feedback_states_used=feedback_states,auxiliary_conflicts=aux_conflicts,joint_targets=len(joint_targets))
             if corrected:
                 retained=all((lambda r:r['total']>=b['accepted_return'] and r['steps']>b['failure_steps'])(play(candidate,b['seed'],horizon)) for b in bank)
-                if retained:
-                    checks={name:protected(before[name],after[name]) for name in after}
-                    report['comparison']={name:v[1] for name,v in checks.items()}
-                    accepted=all(v[0] for v in checks.values()) and checks['development'][1]['gain']>0
+                report['retained_repairs_passed']=retained
+                if retained or objective=='mean_return':
+                    accepted,report['comparison']=accepts(before,after,objective)
                     report.update(accepted=accepted,reason='accepted' if accepted else 'regression_gate')
                 else:report['reason']='lost_retained_repair'
-            if memory and not accepted:
+            if memory:
                 feedback_event=memory.ingest(current,candidate,before['development']+before['gate'],
-                                              after['development']+after['gate'],f'cycle-{cycle:02d}/candidate-{index:02d}')
+                                              after['development']+after['gate'],f'cycle-{cycle:02d}/candidate-{index:02d}',fixed_labels=objective=='mean_return')
                 report['regression_feedback']=dict(regressions=len(feedback_event['all_regressions']),
                                                    traced_cases=len(feedback_event['cases']),states_after=len(memory.entries))
                 status['feedback_states']=len(memory.entries)
@@ -146,6 +147,7 @@ def run(output, config, hosted=False):
         if memory:
             mx,my,mc=memory.arrays(current)
             np.savez_compressed(output/'regression-training-memory.npz',observations=mx,actions=my,counts=mc)
+            write(output/'memory-policy.json',dict(labels='fixed verified teacher actions on import',objective=objective))
         record=dict(cycle=cycle,accepted=accepted,policy_hash=current.fingerprint(),bank=bank.copy(),
                     selected_checkpoint=str(candidate_path.relative_to(output)) if accepted else None,
                     attempts=len(attempts),seed=failure['seed'])
@@ -168,10 +170,10 @@ def run(output, config, hosted=False):
         checkpoint=Policy.load(output/receipt['selected_checkpoint'])
         assert checkpoint.fingerprint()==receipt['policy_hash'],'Checkpoint identity mismatch'
         replay_after={name:evaluate(checkpoint,groups[name],horizon) for name in ['development','gate']}
-        assert all(protected(replay_before[name],replay_after[name])[0] for name in replay_after),'Committed checkpoint regressed'
+        assert accepts(replay_before,replay_after,objective)[0],'Committed checkpoint violates selection objective'
         for repair in receipt['bank']:
             replay=play(checkpoint,repair['seed'],horizon)
-            assert replay['total']>=repair['accepted_return'] and replay['steps']>repair['failure_steps'],'Lost retained repair'
+            if objective=='strict':assert replay['total']>=repair['accepted_return'] and replay['steps']>repair['failure_steps'],'Lost retained repair'
         replay_before=replay_after
     for name,rows in final.items():write(output/f'final-{name}.json.gz',rows)
     summary=dict(status='completed',accepted_checkpoints=sum(r['accepted'] for r in history),
@@ -179,21 +181,28 @@ def run(output, config, hosted=False):
                  base_hash=base.fingerprint(),final_hash=current.fingerprint(),
                  development=compare(original['development'],final['development']),
                  gate=compare(original['gate'],final['gate']),held_out_audit=audit_comparison,
-                 final_replay_passed=True,retained_repairs=bank,scope=config['scope'],
+                 final_replay_passed=True,retained_repairs=bank,scope=config['scope'],objective=objective,
+                 repair_bank_results=[dict(repair=b,actual={k:v for k,v in play(current,b['seed'],horizon).items() if k in ('total','steps','reason')}) for b in bank],
                  regression_feedback_states=len(memory.entries) if memory else 0,
                  regression_feedback_events=len(memory.events) if memory else 0)
     historical_pass=True
     if reference:
-        reference_training={name:evaluate(reference,groups[name],horizon) for name in ['development','gate']}
+        original_reference=Policy.load(ROOT/'assets'/'asterix-base.npz')
+        reference_training={name:evaluate(original_reference,groups[name],horizon) for name in ['development','gate']}
         historical={name:compare(reference_training[name],final[name]) for name in final}
         historical_pass=all(protected(reference_training[name],final[name])[0] for name in final)
-        reference_audit=evaluate(reference,groups['audit'],horizon)
+        reference_audit=evaluate(original_reference,groups['audit'],horizon)
         audit_reference_pass,audit_reference=protected(reference_audit,audit_final)
         write(output/'audit-original-reference.json.gz',reference_audit)
         summary.update(historical_original_reference=historical,fresh_audit_original_reference=audit_reference,
                        inherited_repairs=len(config.get('inherited_repairs',[])))
         audit_pass=audit_pass and audit_reference_pass
-    publish=summary['accepted_checkpoints']>0 and audit_pass and audit_comparison['gain']>0 and historical_pass
+    publish=publishable(summary,objective,historical_pass,audit_pass)
+    deltas=np.asarray([a['total']-b['total'] for b,a in zip(audit_base,audit_final)])
+    rng=np.random.default_rng(config['training_seed'])
+    summary['audit_mean_gain_bootstrap_95_interval']=np.quantile(rng.choice(deltas,size=(10000,len(deltas)),replace=True).mean(axis=1),[.025,.975]).tolist()
+    summary['bootstrap_replicates']=10000
+    summary['publication_criterion']=config.get('publication')
     summary['publishable']=publish;write(output/'summary.json',summary)
     current.save(output/'final.npz')
     if api and publish:
@@ -202,7 +211,7 @@ def run(output, config, hosted=False):
         from safetensors.numpy import save_file
         save_file({f'fc{i}.{kind}': np.ascontiguousarray(current.weights[f'W{i}'].T if kind=='weight' else current.weights[f'b{i}'])
                    for i in [1,2,3] for kind in ['weight','bias']},str(export/'model.safetensors'))
-        card=f"---\nlicense: cc-by-4.0\ntags:\n- reinforcement-learning\n- minatar\n- asterix\n---\n# Asterix failure-conditioned continuation\n\nDerived from the Astra-authored Asterix network in RikiyaT/lm_understand-logs, credited to Rikiya Takehi and collaborators. Gradient-trained here under official MinAtar 1.0.15 rules.\n\n{config['scope']}\n\nDevelopment: {summary['development']}\n\nHeld-out audit: {audit_comparison}\n\n[Evidence](https://huggingface.co/datasets/{config['dataset']}) · [Simulator](https://huggingface.co/spaces/{config['space']})\n"
+        card=f"---\nlicense: cc-by-4.0\ntags:\n- reinforcement-learning\n- minatar\n- asterix\n---\n# Asterix failure-conditioned continuation\n\nDerived from the Astra-authored Asterix network in RikiyaT/lm_understand-logs, credited to Rikiya Takehi and collaborators. Gradient-trained here under official MinAtar 1.0.15 rules.\n\n{config['scope']}\n\nDevelopment: {summary['development']}\n\nSelection objective: {objective}. Individual return and survival losses are disclosed in the audit below. A positive observed mean is not a statistical-significance guarantee.\n\nHeld-out audit: {audit_comparison}\n\nPaired mean-gain bootstrap 95% interval: {summary['audit_mean_gain_bootstrap_95_interval']}\n\n[Evidence](https://huggingface.co/datasets/{config['dataset']}) · [Simulator](https://huggingface.co/spaces/{config['space']})\n"
         (export/'README.md').write_text(card,encoding='utf-8')
         if api.repo_exists(config['model']):raise ValueError('Model output already exists')
         api.create_repo(config['model'],private=False)
