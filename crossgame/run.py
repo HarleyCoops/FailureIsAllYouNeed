@@ -10,6 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from crossgame.asterix import Policy, play, serial, evaluate, compare, diagnose, train
+from crossgame.feedback import RegressionMemory, compatible_targets, import_previous
 
 ROOT = Path(__file__).resolve().parent
 
@@ -56,6 +57,12 @@ def run(output, config, hosted=False):
 
     original={k:evaluate(base,groups[k],horizon) for k in ['development','gate']}
     before=original
+    memory=None;auxiliary=[]
+    if config.get('feedback'):
+        memory=RegressionMemory(groups['development']+groups['gate'],horizon,output/'regression-memory',write,
+                                max_states=config['feedback']['max_states'])
+        auxiliary=import_previous(config,memory,base,original['development']+original['gate'],output,write)
+        status['feedback_states']=len(memory.entries)
     for name,rows in original.items():write(output/f'baseline-{name}.json.gz',rows)
     status['curve'].append(dict(cycle=0,development_mean=compare(before['development'],before['development'])['before_mean'],
                                 gate_mean=compare(before['gate'],before['gate'])['before_mean'],accepted=False))
@@ -80,9 +87,13 @@ def run(output, config, hosted=False):
             probes.extend(ep['observations'][::max(1,len(ep['actions'])//64)])
         probes=np.asarray(probes,dtype=np.float32)
         accepted=False; attempts=[]
-        for index,(target,lr,penalty) in enumerate(itertools.product(targets,config['learning_rates'],config['preservation_penalties'])):
-            candidate,losses=train(current,[target],probes,lr=lr,penalty=penalty,
-                                   steps=config['optimizer_steps'],seed=config['training_seed']+cycle)
+        for index,(target,lr,penalty,refinement) in enumerate(itertools.product(targets,config['learning_rates'],config['preservation_penalties'],range(config.get('feedback',{}).get('refinements',1)))):
+            joint_targets,aux_conflicts=compatible_targets(target,auxiliary)
+            feedback_states=len(memory.entries) if memory else 0
+            candidate,losses=train(current,joint_targets,probes,lr=lr,penalty=penalty,
+                                   steps=config['optimizer_steps'],seed=config['training_seed']+cycle,
+                                   feedback=memory.arrays(current) if memory else None,
+                                   feedback_weight=config['feedback']['weights'][refinement] if memory else 0.)
             candidate_path=directory/f'candidate-{index:02d}.npz';candidate.save(candidate_path)
             candidate=Policy.load(candidate_path)
             actual=play(candidate,failure['seed'],horizon)
@@ -90,25 +101,37 @@ def run(output, config, hosted=False):
             corrected=all(r['total']>failure['total'] and r['steps']>failure['steps'] for r in [actual,conditional])
             report=dict(index=index,lr=lr,penalty=penalty,loss_history=losses,corrected=corrected,
                         candidate_hash=candidate.fingerprint(),accepted=False,reason='target_not_corrected')
-            after=None
+            after={name:evaluate(candidate,groups[name],horizon) for name in ['development','gate']}
+            report.update(refinement=refinement,feedback_states_used=feedback_states,auxiliary_conflicts=aux_conflicts,joint_targets=len(joint_targets))
             if corrected:
                 retained=all((lambda r:r['total']>=b['accepted_return'] and r['steps']>b['failure_steps'])(play(candidate,b['seed'],horizon)) for b in bank)
                 if retained:
-                    after={name:evaluate(candidate,groups[name],horizon) for name in ['development','gate']}
                     checks={name:protected(before[name],after[name]) for name in after}
                     report['comparison']={name:v[1] for name,v in checks.items()}
                     accepted=all(v[0] for v in checks.values()) and checks['development'][1]['gain']>0
                     report.update(accepted=accepted,reason='accepted' if accepted else 'regression_gate')
                 else:report['reason']='lost_retained_repair'
+            if memory and not accepted:
+                feedback_event=memory.ingest(current,candidate,before['development']+before['gate'],
+                                              after['development']+after['gate'],f'cycle-{cycle:02d}/candidate-{index:02d}')
+                report['regression_feedback']=dict(regressions=len(feedback_event['all_regressions']),
+                                                   traced_cases=len(feedback_event['cases']),states_after=len(memory.entries))
+                status['feedback_states']=len(memory.entries)
             write(directory/f'attempt-{index:02d}.json',report);attempts.append(report)
             print(json.dumps(dict(cycle=cycle,attempt=index,reason=report['reason'])),flush=True)
             if wb:
                 wb.log({'candidate/cycle':cycle,'candidate/accepted':int(accepted),
-                        'candidate/final_ce':losses[-1]['ce'],'candidate/final_kl':losses[-1]['kl']})
+                        'candidate/final_ce':losses[-1]['ce'],'candidate/final_kl':losses[-1]['kl'],
+                        'candidate/regression_margin_loss':losses[-1]['regression_margin_loss'],
+                        'candidate/feedback_states':feedback_states})
             if accepted:
                 bank.append(dict(seed=failure['seed'],failure_steps=failure['steps'],accepted_return=actual['total']))
+                auxiliary.append(target)
                 current=candidate;before=after;break
         current.save(output/'accepted.npz')
+        if memory:
+            mx,my,mc=memory.arrays(current)
+            np.savez_compressed(output/'regression-training-memory.npz',observations=mx,actions=my,counts=mc)
         record=dict(cycle=cycle,accepted=accepted,policy_hash=current.fingerprint(),bank=bank.copy(),
                     selected_checkpoint=str(candidate_path.relative_to(output)) if accepted else None,
                     attempts=len(attempts),seed=failure['seed'])
@@ -142,7 +165,9 @@ def run(output, config, hosted=False):
                  base_hash=base.fingerprint(),final_hash=current.fingerprint(),
                  development=compare(original['development'],final['development']),
                  gate=compare(original['gate'],final['gate']),held_out_audit=audit_comparison,
-                 final_replay_passed=True,retained_repairs=bank,scope=config['scope'])
+                 final_replay_passed=True,retained_repairs=bank,scope=config['scope'],
+                 regression_feedback_states=len(memory.entries) if memory else 0,
+                 regression_feedback_events=len(memory.events) if memory else 0)
     publish=summary['accepted_checkpoints']>0 and audit_pass and audit_comparison['gain']>0
     summary['publishable']=publish;write(output/'summary.json',summary)
     current.save(output/'final.npz')

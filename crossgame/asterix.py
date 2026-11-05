@@ -161,7 +161,8 @@ def diagnose(policy, episode, *, max_anchors=24, depth=4, width=6, rollout_budge
                              width=width, rollouts=len(evidence), trials=evidence)
 
 
-def train(policy, targets, probes, *, lr=0.0001, penalty=1., steps=300, seed=9042026):
+def train(policy, targets, probes, *, lr=0.0001, penalty=1., steps=300, seed=9042026,
+          feedback=None, feedback_weight=5.):
     import torch
     from torch import nn
     from torch.nn import functional as F
@@ -179,6 +180,13 @@ def train(policy, targets, probes, *, lr=0.0001, penalty=1., steps=300, seed=904
     if not len(probes):
         raise ValueError('No preservation observations')
     x,y,probes = torch.from_numpy(x),torch.tensor(y,dtype=torch.long),torch.from_numpy(probes)
+    hard_x=hard_y=hard_counts=None;conflicts=0
+    if feedback is not None and len(feedback[0]):
+        fx,fy,counts=feedback
+        corrective={o.numpy().tobytes():int(a) for o,a in zip(x,y)}
+        keep=np.array([o.tobytes() not in corrective or corrective[o.tobytes()]==int(a) for o,a in zip(fx,fy)])
+        conflicts=int((~keep).sum())
+        hard_x=torch.from_numpy(fx[keep]);hard_y=torch.from_numpy(fy[keep]);hard_counts=torch.from_numpy(counts[keep])
     with torch.no_grad():
         teacher = torch.softmax(network(probes),-1)
     optimizer = torch.optim.AdamW(network.parameters(),lr=lr,weight_decay=0.)
@@ -189,10 +197,19 @@ def train(policy, targets, probes, *, lr=0.0001, penalty=1., steps=300, seed=904
         ce = F.cross_entropy(network(x),y)
         kl = F.kl_div(F.log_softmax(network(probes[indices]),-1),teacher[indices],reduction='batchmean')
         displacement = sum((p-q).square().sum() for p,q in zip(network.parameters(),start))
-        loss = ce + penalty*kl + 1e-4*displacement
+        hard_loss=torch.tensor(0.)
+        if hard_x is not None and len(hard_x):
+            chosen=torch.multinomial(hard_counts,min(128,len(hard_x)),replacement=True)
+            logits=network(hard_x[chosen]);labels=hard_y[chosen]
+            correct=logits.gather(1,labels[:,None]).squeeze(1)
+            competitors=logits.clone().scatter(1,labels[:,None],-float('inf')).max(-1).values
+            hard_loss=torch.relu(0.1+competitors-correct).mean()
+        loss = ce + penalty*kl + feedback_weight*hard_loss + 1e-4*displacement
         loss.backward(); torch.nn.utils.clip_grad_norm_(network.parameters(),1.); optimizer.step()
         if step==0 or (step+1)%50==0:
-            history.append(dict(step=step+1,loss=float(loss.detach()),ce=float(ce.detach()),kl=float(kl.detach())))
+            history.append(dict(step=step+1,loss=float(loss.detach()),ce=float(ce.detach()),kl=float(kl.detach()),
+                                regression_margin_loss=float(hard_loss.detach()),feedback_states=0 if hard_x is None else len(hard_x),
+                                conflicting_feedback_states=conflicts))
     weights={}
     for i,layer in enumerate((network[0],network[2],network[4]),1):
         weights[f'W{i}']=layer.weight.detach().numpy().T.copy()

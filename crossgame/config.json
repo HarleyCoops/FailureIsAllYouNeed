@@ -1,21 +1,177 @@
 {
-  "run_id": "asterix-recursive-20261104-01",
-  "dataset": "HarleyCooper/asterix-recursive-trajectories-01",
-  "model": "HarleyCooper/asterix-self-improved-01",
-  "space": "HarleyCooper/asterix-recursive-learning-01",
+  "run_id": "asterix-regression-feedback-20261104-02",
+  "dataset": "HarleyCooper/asterix-recursive-trajectories-02",
+  "model": "HarleyCooper/asterix-self-improved-02",
+  "space": "HarleyCooper/asterix-recursive-learning-02",
   "wandb_entity": "christian-cooper-us",
   "wandb_project": "failure-is-all-you-need-crossgame",
   "horizon": 1000,
-  "development_seeds": [0, 32],
-  "gate_seeds": [1000, 1032],
-  "audit_seeds": [50000, 50128],
+  "development_seeds": [
+    0,
+    32
+  ],
+  "gate_seeds": [
+    1000,
+    1032
+  ],
+  "audit_seeds": [
+    70000,
+    70128
+  ],
   "cycles": 6,
   "optimizer_steps": 300,
-  "learning_rates": [0.0001, 0.0005],
-  "preservation_penalties": [0.1, 1.0, 10.0],
-  "search": {"max_anchors": 24, "depth": 4, "width": 6, "rollout_budget": 96},
+  "learning_rates": [
+    0.0001,
+    5e-05
+  ],
+  "preservation_penalties": [
+    1.0,
+    10.0
+  ],
+  "search": {
+    "max_anchors": 24,
+    "depth": 4,
+    "width": 6,
+    "rollout_budget": 96
+  },
   "training_seed": 9042026,
   "selection": "Positive development mean gain, zero per-seed return losses on development and gate, no lost horizon survivors, retained repair checks",
   "publication": "At least one accepted checkpoint; exact final replay; positive held-out mean gain with zero held-out return losses and no lost survivors",
-  "scope": "New game and checkpoint; transfer of method, not transfer of Breakout weights. Native MinAtar sticky actions 0.1 retained; policy greedy; 1000-step pilot differs from upstream sampled 10000-step evaluation."
+  "scope": "Regression-feedback continuation from the unchanged Asterix base. Original development and gate seeds both supply training counterexamples. Fresh audit 70000-70127 used only after selection. Native MinAtar 1.0.15, sticky actions 0.1, greedy policy, 1000 steps.",
+  "feedback": {
+    "parent": {
+      "dataset": "HarleyCooper/asterix-recursive-trajectories-01",
+      "revision": "95f01d1101fa1c1b29b594d353fc31f25b8c8d77",
+      "proposals": [
+        {
+          "path": "cycle-00/candidate-11.npz",
+          "policy_hash": "b66e69d9ee219d700be09c9394dcd28d1a39a2d0104c51fb2ec9602eed8e8efa",
+          "correction": {
+            "anchor": 351,
+            "sequence": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "total": 18.0,
+            "steps": 513,
+            "dead": true,
+            "corrected": true
+          },
+          "selection_comparison": {
+            "development": {
+              "before_mean": 53.40625,
+              "after_mean": 55.625,
+              "gain": 2.21875,
+              "wins": 5,
+              "losses": 0,
+              "ties": 27,
+              "lost_survivors": 0
+            },
+            "gate": {
+              "before_mean": 59.4375,
+              "after_mean": 60.53125,
+              "gain": 1.09375,
+              "wins": 3,
+              "losses": 3,
+              "ties": 26,
+              "lost_survivors": 1
+            }
+          }
+        },
+        {
+          "path": "cycle-03/candidate-02.npz",
+          "policy_hash": "de8f0322f11e43a026cd379e543add80a80f89131b28d9f9031b9ed782f7cef7",
+          "correction": {
+            "anchor": 638,
+            "sequence": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "total": 69.0,
+            "steps": 1000,
+            "dead": false,
+            "corrected": true
+          },
+          "selection_comparison": {
+            "development": {
+              "before_mean": 53.40625,
+              "after_mean": 55.75,
+              "gain": 2.34375,
+              "wins": 5,
+              "losses": 0,
+              "ties": 27,
+              "lost_survivors": 0
+            },
+            "gate": {
+              "before_mean": 59.4375,
+              "after_mean": 60.1875,
+              "gain": 0.75,
+              "wins": 2,
+              "losses": 1,
+              "ties": 29,
+              "lost_survivors": 0
+            }
+          }
+        },
+        {
+          "path": "cycle-05/candidate-07.npz",
+          "policy_hash": "0649548b2bf309f072c2a71fbef74babcd88fd5e24dcb0bef4e803a0c9c3bd0d",
+          "correction": {
+            "anchor": 933,
+            "sequence": [
+              4,
+              2,
+              2,
+              2
+            ],
+            "total": 58.0,
+            "steps": 986,
+            "dead": true,
+            "corrected": true
+          },
+          "selection_comparison": {
+            "development": {
+              "before_mean": 53.40625,
+              "after_mean": 56.0,
+              "gain": 2.59375,
+              "wins": 5,
+              "losses": 0,
+              "ties": 27,
+              "lost_survivors": 0
+            },
+            "gate": {
+              "before_mean": 59.4375,
+              "after_mean": 60.21875,
+              "gain": 0.78125,
+              "wins": 3,
+              "losses": 1,
+              "ties": 28,
+              "lost_survivors": 0
+            }
+          }
+        }
+      ]
+    },
+    "refinements": 3,
+    "weights": [
+      1.0,
+      5.0,
+      20.0
+    ],
+    "max_states": 4096,
+    "training_seeds": [
+      0,
+      32,
+      1000,
+      1032
+    ],
+    "old_audit_excluded": [
+      50000,
+      50128
+    ]
+  }
 }
